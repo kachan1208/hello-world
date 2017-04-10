@@ -14,8 +14,8 @@ The Virgil CLI is provided as a script and an archive of the files, and it is av
 In order to use the CLI:
 1. download the CLI archive or script for you platform [here](/);
 2. install the CLI with:
-  - MAC OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/macos);
-  - Linux OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/linux).
+      - MAC OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/macos);
+      - Linux OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/linux).
 
 ## Commands
 
@@ -48,7 +48,7 @@ Alice generates private key (private.virgilkey) with the password (strong_pass)
 ```bash
 virgil keygen -o private.virgilkey -p strong_pass
 ```
-and then Alice signs some 'plain.txt' using her private key 
+and then Alice signs some 'plain.txt' using her private key
 
 ```bash
 virgil sign -i plain.txt -o plain.signed -k private.virgilkey -p strong_pass
