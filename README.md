@@ -41,7 +41,7 @@ Using the CLI you can:
 
 ## Using Example
 
-Virgil Security makes it very easy to sign anything in a minutes. With our CLI you need only one line of the code and you will get an signed data for every one of your users and devices.
+Virgil Security makes it very easy to sign anything in a minutes. With our CLI you need only a few lines of the code and you will get a signed data for every one of your users and devices.
 
 Example: Alice signs some plain.txt:
 
@@ -64,7 +64,7 @@ This will result in the creation of a newly signed file (plain.signed).  In this
 
 ## License
 
-BSD 3-Clause. See [LICENSE](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE) for details..
+BSD 3-Clause. See [LICENSE](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE) for details.
 
 ## Support
 
