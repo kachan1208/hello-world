@@ -1,6 +1,6 @@
 # Virgil CLI
 
-[Installation](#installation) | [Using Example](#using-example) | [Commands](#commands) | [Support](#support)
+[Installation](#installation) | [Commands](#commands) | [Using Example](#using-example) | [Support](#support)
 
 [Virgil Security](https://virgilsecurity.com) is a stack of security libraries and all the necessary infrastructure to enable seamless, end-to-end encryption for any application, platform or device. The Command-line interface (CLI) program is a command line tool for utilizing [Virgil Services](https://developer.virgilsecurity.com/docs/java/references). In a few simple steps you can encrypt and decrypt, sign and verify.
 
