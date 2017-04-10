@@ -17,6 +17,8 @@ In order to use the CLI:
       - MAC OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/macos);
       - Linux OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/linux).
 
+
+
 ## Commands
 
 Using the CLI you can:
