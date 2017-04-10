@@ -1,6 +1,6 @@
 # Virgil CLI
 
-[Installation](#installation) | [Example](#using-example) | [Documentation](#commands) | [Support](#support)
+[Installation](#installation) | [Using Example](#using-example) | [Commands](#commands) | [Support](#support)
 
 [Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. The Command-line interface (CLI) program is a command line tool for utilizing [Virgil Services](https://developer.virgilsecurity.com/docs/java/references). In a few simple steps you can encrypt and decrypt, sign and verify.
 
@@ -54,8 +54,8 @@ Next: [Learn more about our the different ways of encryption](/) with the CLI in
 
 ## License
 
-This library is released under the [3-clause BSD License](LICENSE.md).
+BSD 3-Clause. See [LICENSE](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE) for details..
 
 ## Support
 
-Our developer support team is here to help you. You can find us on [Twitter](https://twitter.com/virgilsecurity) and [email](support@virgilsecurity.com).
+Our developer support team is here to help you. You can find us on [Twitter](https://twitter.com/virgilsecurity) and [email](mailto:support@virgilsecurity.com).
