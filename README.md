@@ -35,7 +35,7 @@ Using the CLI you can:
     * See use's [Card info](/references/utilities/cli/commands/additional-commands/card-info) (content)
     * Use [Secret Alias](/references/utilities/cli/commands/additional-commands/secret-alias)
 
-Next: [Learn more about the CLI commands](/) in our documentation.
+[Learn more about the CLI commands](/) in our documentation.
 
 ## Using Example
 
@@ -49,7 +49,7 @@ virgil encrypt -i plain.txt -o enc.txt email:bob@mail.com
 This will result in the creation of a newly encrypted file (enc.txt).  In this example, the encrypted file will be stored in the folder, from which the command was run.
 
 
-Next: [Learn more about our the different ways of encryption](/) with the CLI in our documentation.
+[Learn more about our the different ways of encryption](/) with the CLI in our documentation.
 
 
 ## License
