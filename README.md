@@ -49,7 +49,7 @@ virgil keygen -o private.virgilkey -p strong_pass | virgil sign -i plain.txt -o 
 This will result in the creation of a newly signed file (plain.signed).  In this example, the signed file will be stored in the folder, from which the command was run.
 
 
-[more examples how to sign data signature](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/encrypt) with the CLI in our documentation.
+[More examples about how to sign data](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/sign)  with the CLI you can find in our documentation..
 
 
 ## License
