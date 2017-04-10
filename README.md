@@ -5,7 +5,7 @@
 [Virgil Security](https://virgilsecurity.com) is a stack of security libraries and all the necessary infrastructure to enable seamless, end-to-end encryption for any application, platform or device. The Command-line interface (CLI) program is a command line tool for utilizing [Virgil Services](https://developer.virgilsecurity.com/docs/java/references). In a few simple steps you can encrypt and decrypt, sign and verify.
 
 
-For a full overview head over to our [developer portal](https://developer.virgilsecurity.com/docs/java/references/utilities/cli)
+For a full overview head over to our [documentation portal](https://developer.virgilsecurity.com/docs/java/references/utilities/cli).
 
 ## Installation
 
@@ -41,7 +41,7 @@ Using the CLI you can:
 
 ## Using Example
 
-Virgil Security makes it very easy to sign anything in a minutes. With our CLI you need only a few lines of the code and you will get a signed data for every one of your users and devices.
+Virgil Security makes it very easy to sign anything in minutes. With our CLI you need only a few lines of the code and you will get a signed data for every one of your users and devices.
 
 Example: Alice signs some plain.txt:
 
@@ -59,7 +59,7 @@ virgil sign -i plain.txt -o plain.signed -k private.virgilkey -p strong_pass
 This will result in the creation of a newly signed file (plain.signed).  In this example, the signed file will be stored in the folder, from which the command was run.
 
 
-[More examples about how to sign data](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/sign)  with the CLI you can find in our documentation..
+[More examples about how to sign data](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/sign)  with the CLI you can find in our documentation.
 
 
 ## License
