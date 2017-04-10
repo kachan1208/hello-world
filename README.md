@@ -39,17 +39,17 @@ Using the CLI you can:
 
 ## Using Example
 
-Virgil Security makes it very easy to encrypt anything in a minutes. With our CLI you need only one line of the code and you will get an encrypted data for every one of your users and devices.
+Virgil Security makes it very easy to sign anything in a minutes. With our CLI you need only one line of the code and you will get an signed data for every one of your users and devices.
 
-Example: Alice encrypts some 'plain.txt' for Bob using his email as a recipient-id:
+Example: Alice generates private key (private.virgilkey) with the password (strong_pass) and then signs some 'plain.txt' using her private key
 
 ```bash
-virgil encrypt -i plain.txt -o enc.txt email:bob@mail.com
+virgil keygen -o private.virgilkey -p strong_pass | virgil sign -i plain.txt -o plain.signed -k private.virgilkey -p strong_pass
 ```
-This will result in the creation of a newly encrypted file (enc.txt).  In this example, the encrypted file will be stored in the folder, from which the command was run.
+This will result in the creation of a newly signed file (plain.signed).  In this example, the signed file will be stored in the folder, from which the command was run.
 
 
-[Learn more about our the different ways of encryption](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/encrypt) with the CLI in our documentation.
+[more examples how to sign data signature](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/encrypt) with the CLI in our documentation.
 
 
 ## License
