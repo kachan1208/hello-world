@@ -41,11 +41,19 @@ Using the CLI you can:
 
 Virgil Security makes it very easy to sign anything in a minutes. With our CLI you need only one line of the code and you will get an signed data for every one of your users and devices.
 
-Example: Alice generates private key (private.virgilkey) with the password (strong_pass) and then signs some 'plain.txt' using her private key
+Example: Alice signs some plain.txt:
+
+Alice generates private key (private.virgilkey) with the password (strong_pass)
 
 ```bash
-virgil keygen -o private.virgilkey -p strong_pass | virgil sign -i plain.txt -o plain.signed -k private.virgilkey -p strong_pass
+virgil keygen -o private.virgilkey -p strong_pass
 ```
+and then Alice signs some 'plain.txt' using her private key 
+
+```bash
+virgil sign -i plain.txt -o plain.signed -k private.virgilkey -p strong_pass
+```
+
 This will result in the creation of a newly signed file (plain.signed).  In this example, the signed file will be stored in the folder, from which the command was run.
 
 
