@@ -14,28 +14,28 @@ The Virgil CLI is provided as a script and an archive of the files, and it is av
 In order to use the CLI:
 1. download the CLI archive or script for you platform [here](/);
 2. install the CLI with:
-  - MAC OS [install guide](/);
-  - Linux OS [install guide](/).
+  - MAC OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/macos);
+  - Linux OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/linux).
 
 ## Commands
 
 Using the CLI you can:
-  * [Generate a Virgil Key](/references/utilities/cli/commands/generate-key) (Private Key)
-  * [Extract a Public Key](/references/utilities/cli/commands/public-key)
-  * [Create](/references/utilities/cli/commands/create-card) a User's Virgil Card
-  * [Get](/references/utilities/cli/commands/get-card) a User's Virgil Card
-  * [Search](/references/utilities/cli/commands/search-card) for a User's Virgil Card
-  * [Revoke](/references/utilities/cli/commands/revoke-card) a User's Virgil Card
-  * [Encrypt data](/references/utilities/cli/commands/encrypt)
-  * [Decrypt](/references/utilities/cli/commands/decrypt) the encrypted data
-  * [Sign data](/references/utilities/cli/commands/sign)
-  * [Verify](/references/utilities/cli/commands/verify) the signature
+  * [Generate a Virgil Key](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/generate-key) (Private Key)
+  * [Extract a Public Key](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/public-key)
+  * [Create](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/create-card) a User's Virgil Card
+  * [Get](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/get-card) a User's Virgil Card
+  * [Search](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/search-card) for a User's Virgil Card
+  * [Revoke](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/revoke-card) a User's Virgil Card
+  * [Encrypt data](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/encrypt)
+  * [Decrypt](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/decrypt) the encrypted data
+  * [Sign data](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/sign)
+  * [Verify](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/verify) the signature
   * Some additional commands:
-    * Change [Key format](/references/utilities/cli/commands/additional-commands/key-format)
-    * See use's [Card info](/references/utilities/cli/commands/additional-commands/card-info) (content)
-    * Use [Secret Alias](/references/utilities/cli/commands/additional-commands/secret-alias)
+    * Change [Key format](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/additional-commands/key-format)
+    * See use's [Card info](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/additional-commands/card-info) (content)
+    * Use [Secret Alias](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/additional-commands/secret-alias)
 
-[Learn more about the CLI commands](/) in our documentation.
+[Learn more about the CLI commands](https://developer.virgilsecurity.com/docs/java/references/utilities/cli) in our documentation.
 
 ## Using Example
 
@@ -49,7 +49,7 @@ virgil encrypt -i plain.txt -o enc.txt email:bob@mail.com
 This will result in the creation of a newly encrypted file (enc.txt).  In this example, the encrypted file will be stored in the folder, from which the command was run.
 
 
-[Learn more about our the different ways of encryption](/) with the CLI in our documentation.
+[Learn more about our the different ways of encryption](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/encrypt) with the CLI in our documentation.
 
 
 ## License
