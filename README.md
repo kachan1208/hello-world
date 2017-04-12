@@ -1,3 +1,5 @@
+[![Production](https://travis-ci.org/VirgilSecurity/virgil-cli.svg?branch=master)](https://travis-ci.org/VirgilSecurity/virgil-cli)
+
 # Virgil CLI
 
 [Installation](#installation) | [Commands](#commands) | [Using Example](#using-example) | [Support](#support)
@@ -22,7 +24,7 @@ In order to use the CLI:
 ## Commands
 
 Using the CLI you can:
-  * [Generate a Virgil Key](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/generate-key) (Private Key)
+  * [Generate a Private Key](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/generate-key) (Private Key)
   * [Extract a Public Key](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/public-key)
   * [Create](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/create-card) a User's Virgil Card
   * [Get](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/commands/get-card) a User's Virgil Card
