@@ -1,4 +1,3 @@
-
 # Virgil CLI
 
 [Installation](#installation) | [Commands](#commands) | [Using Example](#using-example) | [Support](#support)
@@ -18,7 +17,17 @@ In order to use the CLI:
       - MAC OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/macos);
       - Linux OS [install guide](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/install/linux).
 
+## Uninstallation
 
+If you need to uninstall the CLI, use this command:
+
+```bash
+./utils/unistall.sh [--prefix=] [--keep-config]
+```
+Options:
+  * The `unistall.sh` - Uninstallation script.
+  * The `--prefix=` - the installation directory (don't use this option, if installation was to default directory).
+  * The `--keep-config` - use this option if you want to save the config file.
 
 ## Commands
 
