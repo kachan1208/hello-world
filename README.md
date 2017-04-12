@@ -1,4 +1,3 @@
-[![Production](https://travis-ci.org/VirgilSecurity/virgil-cli.svg?branch=master)](https://travis-ci.org/VirgilSecurity/virgil-cli)
 
 # Virgil CLI
 
