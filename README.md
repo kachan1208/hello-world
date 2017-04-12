@@ -24,7 +24,7 @@ If you need to uninstall the CLI, use this command:
 ```bash
 ./utils/unistall.sh [--prefix=] [--keep-config]
 ```
-[You cam find example ](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/uninstallation) in our documentation.
+[You can find example and option explanation ](https://developer.virgilsecurity.com/docs/java/references/utilities/cli/settings/uninstallation) in our documentation.
 
 ## Commands
 
