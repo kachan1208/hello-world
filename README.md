@@ -80,7 +80,7 @@ import VirgilSDK
 
 __Next:__ [Get Started with the Objective-C/Swift PFS SDK](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy).
 
-# Encryption Example
+# PFS Encryption Example
 
 Virgil Security makes it super easy to add PFS to any communications. With our Virgil SDK you create a public [Virgil Card](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy#register-users) for every one of your users and devices. With these in place you can easily initialize PFS chat.
 
@@ -99,15 +99,26 @@ self.secureChat.rotateKeys(desiredNumberOfCards: 100) { error in
 }
 ```
 
-The receiving user then uses their stored __private key__ to decrypt the message.
+Once Recipients initialized a PFS Chat, they can communicate. User then uses session chat id to encrypt the message.
 
 
 ```swift
-// load Alice's Key from storage.
-let aliceKey = try! virgil.keys.loadKey(withName: "alice_key_1", password: "mypassword")
+func sendMessage(forReceiver receiver: User,
+    usingSession session: SecureSession, message: String) {
+    let ciphertext: String
+    do {
+        // encrypt the message using previously initialized session
+        ciphertext = try session.encrypt(message)
+    }
+    catch {
+        // Error handling
+        return
+    }
 
-// decrypt the message using the key
-let originalMessage = String(data: try! aliceKey.decrypt(transferData), encoding: .utf8)!
+    // send a cipher message to recipient using your messaging service
+    self.messenger.sendMessage(
+        forReceiverWithName: receiver.name, text: ciphertext)
+
 ```
 
 __Next:__ To [get you properly started][_guide_encryption] you'll need to know how to create and store Virgil Cards. Our [Get Started guide][_guide_encryption] will get you there all the way.
