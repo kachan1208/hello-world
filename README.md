@@ -11,16 +11,16 @@
 
 [Installation](#installation) | [Encryption Example](#encryption-example) | [Initialization](#initialization) | [Documentation](#documentation) | [Support](#support)
 
-[Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few simple steps you can encrypt communication, securely store data, provide passwordless login, and ensure data integrity.
+[Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few simple steps you can encrypt communication, securely store data, provide passwordless login, ensure data integrity, and create perfect forward secrecy in communications.
 
-For a full overview head over to our Objective-C/Swift [Get Started](https://developer.virgilsecurity.com/docs/swift/guides) guides.
+Perfect Forward Secrecy (PFS) is a technique, that protects previously intercepted traffic from being decrypted even if the main private key is compromised. For a full overview head over to our [website](https://developer.virgilsecurity.com/docs/references/perfect-forward-secrecy).
 
 ## Installation
 
 **Virgil PFS SDK** package includes the interdependent **Virgil SDK** package. The **Virgil SDK** is provided as module inside framework named **VirgilSDK**. VirgilSDK depends on another Virgil module called VirgilCrypto also packed inside framework named **VirgilCrypto**.
 Both packages are distributed via Carthage and CocoaPods. Carthage is RECOMMENDED way to integrate VirgilSDK into your projects. Carthage integration is easy, convenient and you can simultaniously use CocoaPods to manage all other dependencies. CocoaPods support for versions above 4.5.0 is SUSPENDED, more info below under CocoaPods section.
 
-Packages are available for iOS 7.0+ and macOS 10.10+.
+Packages are available for iOS 7.0+.
 
 To link frameworks to your project follow instructions depending on package manager of your choice:
 
