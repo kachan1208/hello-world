@@ -82,17 +82,20 @@ __Next:__ [Get Started with the Objective-C/Swift PFS SDK](https://developer.vir
 
 # Encryption Example
 
-Virgil Security makes it super easy to add PFS to any communications. With our Virgil PFS SDK you create a public [Virgil Card](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy#register-users) for every one of your users and devices. With these in place you can easily encrypt any data in the client.
+Virgil Security makes it super easy to add PFS to any communications. With our Virgil SDK you create a public [Virgil Card](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy#register-users) for every one of your users and devices. With these in place you can easily initialize PFS chat.
 
 ```swift
-// find Alice's card(s)
-virgil.cards.searchCards(withIdentities: ["alice"]) { aliceCards, error in
-  // encrypt the message using Alice's cards
-  let message = "Hello Alice!"
-  let encryptedMessage = try! virgil.encrypt(message, for: aliceCards!)
+let secureChatPreferences = SecureChatPreferences (
+    crypto: "[CRYPTO]",
+    // identity Bob's Card
+    identityCard: "[BOB_IDENTITY_CARD]",
+    privateKey: "[BOB_PRIVATE_KEY]",
+    accessToken: "[YOUR_ACCESS_TOKEN_HERE]")
 
-  // transmit the message with your preferred technology
-  self.transmit(message: encryptedMessage.base64EncodedString())
+self.secureChat = SecureChat(preferences: secureChatPreferences)
+
+self.secureChat.rotateKeys(desiredNumberOfCards: 100) { error in
+    //...
 }
 ```
 
