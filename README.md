@@ -9,7 +9,7 @@
 [![codecov.io](https://codecov.io/github/VirgilSecurity/virgil-sdk-x/coverage.svg)](https://codecov.io/github/VirgilSecurity/virgil-sdk-x/)
 [![GitHub license](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE)
 
-[Installation](#installation) | [Encryption Example](#encryption-example) | [Initialization](#initialization) | [Documentation](#documentation) | [Migration notes](#migration-notes) | [Support](#support)
+[Installation](#installation) | [Encryption Example](#encryption-example) | [Initialization](#initialization) | [Documentation](#documentation) | [Support](#support)
 
 [Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few simple steps you can encrypt communication, securely store data, provide passwordless login, and ensure data integrity.
 
@@ -83,7 +83,7 @@ import VirgilSDK
 Although VirgilSDK pod is using Objective-C as its primary language it might be quite easily used in a Swift application.
 All public API is available from Swift and is bridged using NS_SWIFT_NAME where needed.
 
-__Next:__ [Get Started with the Objective-C/Swift SDK][https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-communication].
+__Next:__ [Get Started with the Objective-C/Swift SDK](https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-communication).
 
 # Encryption Example
 
@@ -145,19 +145,10 @@ let virgil = VSSVirgilApi(context: context)
 
 Virgil Security has a powerful set of APIs, and the documentation is there to get you started today.
 
-* [Get Started](https://developer.virgilsecurity.com/docs/swift/get-started) documentation
+* Get Started documentation:
   * [Perfect Forward Secrecy](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy)
-* [Reference API][_reference_api]
+* [Reference API](https://developer.virgilsecurity.com/docs/references)
 
-## Migration notes
-
-For users of versions prior to 4.4.0 we recommend checking out version 4.4.0+ with completely new and more convenient API.
-Anyway, old API is still available, so anyone can migrate with little changes to the source sode. Therefore, it is recommended to migrate to the newest version for ALL users.
-List of the most important changes:
-- Renaming: VSSCreateGlobalCardRequest -> VSSCreateEmailCardRequest
-- Renaming: VSSCreateCardRequest -> VSSCreateUserCardRequest
-- Renaming: VSSRevokeGlobalCardRequest -> VSSRevokeEmailCardRequest
-- Renaming: VSSRevokeCardRequest -> VSSRevokeUserCardRequest
 
 ## License
 
