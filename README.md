@@ -83,7 +83,7 @@ import VirgilSDK
 Although VirgilSDK pod is using Objective-C as its primary language it might be quite easily used in a Swift application.
 All public API is available from Swift and is bridged using NS_SWIFT_NAME where needed.
 
-__Next:__ [Get Started with the Objective-C/Swift SDK][_getstarted].
+__Next:__ [Get Started with the Objective-C/Swift SDK][https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-communication].
 
 # Encryption Example
 
