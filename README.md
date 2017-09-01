@@ -11,14 +11,14 @@
 
 [Installation](#installation) | [Encryption Example](#encryption-example) | [Initialization](#initialization) | [Documentation](#documentation) | [Support](#support)
 
-[Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few simple steps you can encrypt communication, securely store data, provide passwordless login, ensure data integrity, and create perfect forward secrecy in communications.
+[Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few simple steps you can encrypt communication, securely store data, provide passwordless login, ensure data integrity, and add perfect forward secrecy in communications.
 
 Perfect Forward Secrecy (PFS) is a technique, that protects previously intercepted traffic from being decrypted even if the main private key is compromised. For a full overview head over to our [website](https://developer.virgilsecurity.com/docs/references/perfect-forward-secrecy).
 
 ## Installation
 
 **Virgil PFS SDK** package includes the interdependent **Virgil SDK** package. The **Virgil SDK** is provided as module inside framework named **VirgilSDK**. VirgilSDK depends on another Virgil module called VirgilCrypto also packed inside framework named **VirgilCrypto**.
-Both packages are distributed via Carthage and CocoaPods. Carthage is RECOMMENDED way to integrate VirgilSDK into your projects. Carthage integration is easy, convenient and you can simultaniously use CocoaPods to manage all other dependencies. CocoaPods support for versions above 4.5.0 is SUSPENDED, more info below under CocoaPods section.
+All packages are distributed via Carthage and CocoaPods. Carthage is RECOMMENDED way to integrate Virgil PFS SDK into your projects. Carthage integration is easy, convenient. CocoaPods support for versions above 4.5.0 is SUSPENDED, more info below under CocoaPods section.
 
 Packages are available for iOS 7.0+.
 
@@ -69,7 +69,7 @@ With the debug information copied into the built products directory, Xcode will 
 When archiving your application for submission to the App Store or TestFlight, Xcode will also copy these files into the dSYMs subdirectory of your application’s `.xcarchive` bundle.
 
 
-To import VirgilSDK and VirgilCrypto after linking frameworks to your project add following lines to your source files:
+To import Virgil PFS SDK and VirgilCrypto after linking frameworks to your project add following lines to your source files:
 
 
 ###### Swift
@@ -77,11 +77,6 @@ To import VirgilSDK and VirgilCrypto after linking frameworks to your project ad
 import VirgilCrypto
 import VirgilSDK
 ```
-
-## Swift note
-
-Although VirgilSDK pod is using Objective-C as its primary language it might be quite easily used in a Swift application.
-All public API is available from Swift and is bridged using NS_SWIFT_NAME where needed.
 
 __Next:__ [Get Started with the Objective-C/Swift SDK](https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-communication).
 
