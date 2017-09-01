@@ -78,11 +78,11 @@ import VirgilCrypto
 import VirgilSDK
 ```
 
-__Next:__ [Get Started with the Objective-C/Swift SDK](https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-communication).
+__Next:__ [Get Started with the Objective-C/Swift PFS SDK](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy).
 
 # Encryption Example
 
-Virgil Security makes it super easy to add encryption to any application. With our Virgil PFS SDK you create a public [Virgil Card](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy#register-users) for every one of your users and devices. With these in place you can easily encrypt any data in the client.
+Virgil Security makes it super easy to add PFS to any communications. With our Virgil PFS SDK you create a public [Virgil Card](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy#register-users) for every one of your users and devices. With these in place you can easily encrypt any data in the client.
 
 ```swift
 // find Alice's card(s)
@@ -117,22 +117,12 @@ To use this SDK you need to [sign up for an account](https://developer.virgilsec
 To initialize the SDK on the client side you will only need the __access token__ you created.
 
 ```swift
-let virgil = VSSVirgilApi(token: "[ACCESS_TOKEN]")
+let virgil = VSSVirgilApi(token: "[YOUR_ACCESS_TOKEN_HERE]")
 ```
 
 > __Note:__ this client will have limited capabilities. For example, it will be able to generate new __Cards__ but it will need a server-side client to transmit these to Virgil.
 
 To initialize the SDK on the server side we will need the __access token__, __app id__ and the __App Key__ you created on the [Developer Dashboard](https://developer.virgilsecurity.com/account/dashboard).
-
-```swift
-let url = Bundle.main.url(forResource: "[YOUR_APP_KEY_FILENAME_HERE]", withExtension: nil)!
-let appPrivateKeyData = try! Data(contentsOf: url)
-let credentials = VSSCredentials(appKeyData: appPrivateKeyData, appKeyPassword: "[YOUR_APP_KEY_PASSWORD_HERE]", appId: "[YOUR_APP_ID_HERE]")
-
-let context = VSSVirgilApiContext(crypto: nil, token: "[YOUR_ACCESS_TOKEN_HERE]", credentials: credentials, cardVerifiers: nil)
-
-let virgil = VSSVirgilApi(context: context)
-```
 
 
 ## Documentation
@@ -151,18 +141,3 @@ This library is released under the [3-clause BSD License](LICENSE.md).
 ## Support
 
 Our developer support team is here to help you. You can find us on [Twitter](https://twitter.com/virgilsecurity) or send us email support@virgilsecurity.com
-
-[__support_email]: https://google.com.ua/
-[_getstarted_root]: https://developer.virgilsecurity.com/docs/swift/get-started
-[_getstarted]: https://developer.virgilsecurity.com/docs/swift/guides
-[_getstarted_encryption]: https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-communication
-[_getstarted_storage]: https://developer.virgilsecurity.com/docs/swift/get-started/encrypted-storage
-[_getstarted_data_integrity]: https://developer.virgilsecurity.com/docs/swift/get-started/data-integrity
-[_getstarted_passwordless_login]: https://developer.virgilsecurity.com/docs/swift/get-started/passwordless-authentication
-[_guides]: https://developer.virgilsecurity.com/docs/swift/guides
-[_guide_initialization]: https://developer.virgilsecurity.com/docs/swift/guides/settings/install-sdk
-[_guide_virgil_cards]: https://developer.virgilsecurity.com/docs/swift/guides/virgil-card/creating
-[_guide_virgil_keys]: https://developer.virgilsecurity.com/docs/swift/guides/virgil-key/generating
-[_guide_encryption]: https://developer.virgilsecurity.com/docs/swift/guides/encryption/encrypting
-[_initialize_root]: https://developer.virgilsecurity.com/docs/swift/guides/settings/initialize-sdk-on-client
-[_reference_api]: http://virgilsecurity.github.io/virgil-sdk-x/
