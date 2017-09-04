@@ -22,7 +22,7 @@ All packages are distributed via Carthage. Carthage is RECOMMENDED way to integr
 
 Packages are available for iOS 7.0+.
 
-To link frameworks to your project follow instructions depending on package manager of your choice:
+To link frameworks to your project follow instruction:
 
 ### Carthage
 
