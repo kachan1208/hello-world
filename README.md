@@ -121,14 +121,13 @@ func sendMessage(forReceiver receiver: User,
 
 ```
 
-__Next:__ To [get you properly started][_guide_encryption] you'll need to know how to create and store Virgil Cards. Our [Get Started guide][_guide_encryption] will get you there all the way.
 
 
 ## Initialization
 
 To use this SDK you need to [sign up for an account](https://developer.virgilsecurity.com/account/signup) and create your first __application__. Make sure to save the __app id__, __private key__ and it's __password__. After this, create an __application token__ for your application to make authenticated requests from your clients.
 
-To initialize the SDK on the client side you will only need the __access token__ you created.
+To initialize the PFS SDK on the client side you will only need the __access token__ you created.
 
 ```swift
 let virgil = VSSVirgilApi(token: "[YOUR_ACCESS_TOKEN_HERE]")
@@ -143,8 +142,7 @@ To initialize the SDK on the server side we will need the __access token__, __ap
 
 Virgil Security has a powerful set of APIs, and the documentation is there to get you started today.
 
-* Get Started documentation:
-  * [Perfect Forward Secrecy](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy)
+* [Perfect Forward Secrecy](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy)
 * [Reference API](https://developer.virgilsecurity.com/docs/references)
 
 
