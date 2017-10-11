@@ -18,7 +18,14 @@ Perfect Forward Secrecy (PFS) is a technique, that protects previously intercept
 ## Installation
 
 **Virgil PFS SDK** package includes the interdependent **Virgil SDK** package. The **Virgil SDK** is provided as module inside framework named **VirgilSDK**. VirgilSDK depends on another Virgil module called VirgilCrypto also packed inside framework named **VirgilCrypto**.
-All packages are distributed via Carthage. Carthage is RECOMMENDED way to integrate Virgil PFS SDK into your projects. Carthage integration is easy, convenient. 
+All packages are distributed via Carthage. Carthage is RECOMMENDED way to integrate Virgil PFS SDK into your projects. Carthage integration is easy, convenient.
+
+
+
+
+
+
+
 
 Packages are available for iOS 7.0+.
 
