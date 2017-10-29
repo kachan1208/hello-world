@@ -106,7 +106,11 @@ self.secureChat.rotateKeys(desiredNumberOfCards: 100) { error in
 }
 ```
 
-Once Recipients initialized a PFS Chat, they can communicate. User then uses session chat id to encrypt the message.
+
+
+
+
+t, they can communicate. User then uses session chat id to encrypt the message.
 
 
 ```swift
