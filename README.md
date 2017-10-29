@@ -124,7 +124,7 @@ func sendMessage(forReceiver receiver: User,
 
     // send a cipher message to recipient using your messaging service
     self.messenger.sendMessage(
-        forReceiverWithName: receiver.name, text: ciphertext)
+        ReceiverWithName: receiver.name, text: ciphertext)
 
 ```
 
@@ -143,20 +143,3 @@ let virgil = VSSVirgilApi(token: "[YOUR_ACCESS_TOKEN_HERE]")
 > __Note:__ this client will have limited capabilities. For example, it will be able to generate new __Cards__ but it will need a server-side client to transmit these to Virgil.
 
 To initialize the SDK on the server side we will need the __access token__, __app id__ and the __App Key__ you created on the [Developer Dashboard](https://developer.virgilsecurity.com/account/dashboard).
-
-
-## Documentation
-
-Virgil Security has a powerful set of APIs, and the documentation is there to get you started today.
-
-* [Perfect Forward Secrecy](https://developer.virgilsecurity.com/docs/swift/get-started/perfect-forward-secrecy)
-* [Reference API](https://developer.virgilsecurity.com/docs/references)
-
-
-## License
-
-This library is released under the [3-clause BSD License](LICENSE.md).
-
-## Support
-
-Our developer support team is here to help you. You can find us on [Twitter](https://twitter.com/virgilsecurity) or send us email support@virgilsecurity.com
