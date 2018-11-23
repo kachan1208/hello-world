@@ -113,4 +113,8 @@ async function onUserRegistered(user) {
     // User private key loaded, ready to end-to-end encrypt!
 });
 
+в подальному на новому дивайсі на логін:
 
+```js
+// нічого не треба просто юзайте encrypt/decrypt
+```
