@@ -144,3 +144,5 @@ async function onUserRegistered(user) {
     // User private key loaded, ready to end-to-end encrypt!
 });
 ```
+
+Крок 3 в Варіант #3 і в Варіант #2 - однакові
