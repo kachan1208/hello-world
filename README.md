@@ -1,4 +1,4 @@
-Варіант #1. Тільки Single Device:
+## Варіант #1. Тільки Single Device:
 
 1. Sign Up: `eThree.bootstrap()`
 
@@ -25,7 +25,7 @@ async function onUserRegistered(user) {
 // нічого не треба просто юзайте encrypt/decrypt
 ```
 
-Варіант #2. Тільки Multi Device:
+## Варіант #2. Тільки Multi Device:
 
 1. Sign Up: `eThree.bootstrap(pwd)`
 
@@ -91,8 +91,9 @@ async function onUserRegistered(user) {
 
     // User private key loaded, ready to end-to-end encrypt!
 });
+```
 
-Варіант #3. Enable Multi Device (Migrate from single to multi)
+## Варіант #3. Enable Multi Device (Migrate from single to multi)
 
 1. На першому SINGLE DEVICE викликаємо `eThree.backupPrivateKey(pwd)`
 
@@ -102,7 +103,7 @@ async function onUserRegistered(user) {
 // If user wants to delete her account, this is the function to
 //	delete her private key
 eThree.resetPrivateKeyBackup(encryptionPassword)
-
+```
 
 2. На кожному новому дивайсі викликаємо
 
@@ -142,3 +143,4 @@ async function onUserRegistered(user) {
 
     // User private key loaded, ready to end-to-end encrypt!
 });
+```
