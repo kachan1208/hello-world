@@ -68,7 +68,7 @@ eThree.resetPrivateKeyBackup(encryptionPassword)
 
 2. На кожному новому дивайсі викликаємо
 
-а) якщо точно ви знаєте що це новий дивайс для користувача, то викликаємо `eThree.bootstrap(pwd)` на логін:
+а) якщо точно ви знаєте що це новий дивайс для користувача, то викликаємо `eThree.bootstrap(pwd)` на ПЕРВИННИЙ логін:
 
 ```js
 import { EThree } from '@virgilsecurity/e3kit';
@@ -87,7 +87,7 @@ async function onUserRegistered(user) {
     // User private key loaded, ready to end-to-end encrypt!
 });
 ```
-б) якщо ви НЕ трекаєте, що це новий дивайс користувача, то викликайте на логін:
+б) якщо ви НЕ трекаєте, що це новий дивайс користувача, то викликайте на ПЕРШИЙ логін:
 
 ```js
 import { EThree } from '@virgilsecurity/e3kit';
