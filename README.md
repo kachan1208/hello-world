@@ -58,34 +58,28 @@ import SwiftCleanUp from './Code_snippets/Clean_up/swift_clean_up.txt';
 import KotlinCleanUp from './Code_snippets/Clean_up/kotlin_clean_up.txt';
 
 
-In this tutorial, we will help you add end-to-end encryption to your product in order to secure messages and user data.
+In this tutorial, we will help you add end-to-end encryption to your product to secure your message and user data.
 
 <CollapsibleContent theme={CollapsibleContent.Theme.Grey} title="How Does End-to-End Encryption Work?"><HowItWork /></CollapsibleContent>
 
 <SectionTitle>Set Up Your Backend</SectionTitle>
 
-In this tutorial we assume that you have a basic backend server for your app. Your server must be able to create and store user records in
-persistent storage and provide a user authentication strategy. It doesn't matter which authentication strategy you use, it can be simple
-username/password or some third-party provider like GitHub or Facebook.
+In this tutorial we assume that you have a basic backend server for your app. Your server must be able to create and store user records in persistent storage and provide a user authentication function, whether that's a simple username/password setup or a third-party provider like GitHub or Facebook.
 
 ## Provide your users access to Virgil Cloud
 
-To make API calls to the Virgil Cloud, the users of your app will need a JWT, which you'll need to provide them with.
-The JWT must include the user's `identity` which is a string that uniquely identifies each user in your application.
-For this tutorial we'll assume that your user records have a unique ID assigned by the database,  known as `uid`, and we will use that as their `identity`.
+To make API calls to the Virgil Cloud, you'll need to provide the users of your app with a JWT that contains the user's `identity` which is a string that uniquely identifies each user in your application. For this tutorial we'll assume that your user records have a unique ID assigned by the database,  known as `uid`, and we will use that as their `identity`.
 
-> You can use any string value for the user identity as long as it's unique for each user. For security reasons, avoid using fields that contain any personally identifiable information such as name or email address.
+> You can use any string value for the user identity as long as it's unique for each user. For security reasons, avoid using fields that contain any personally identifiable information such as name or email address, especially if your product needs to comply with regulations such as HIPAA and GDPR.
 
-Each JWT must be signed with your Virgil _API Key_ to prove that it was issued by you. Therefore the generation of JWTs must be done
-server-side, because you need to authenticate the user making the request to get their `identity`, and also, because your Virgil API Key is sensitive information,
-which the client side of your app must not have access to.
+JWTs must be generated on the server-side for several reasons: 1) each JWT must be signed with your Virgil _API Key_ to prove it was issued by you, 2) the clint side should not have access to your sensitive _API Key_ and 3) you need to authenticate the user making the request to get their `identity`.
 
 In order to generate a JWT, you need the following information from your Virgil Account:
 
 |Parameter|Description|
 |---------|-----------|
-|API_PRIVATE_KEY|Private key of your API key that is used to sign the JWTs.|
-|API_KEY_ID|ID of your API key. A unique string value that identifies your account in the Virgil Cloud.|
+|API_PRIVATE_KEY|Your API key's private key that is used to sign the JWTs.|
+|API_KEY_ID|Your API key's ID that is a unique string value which identifies your account in the Virgil Cloud.|
 |APP_ID|ID of your Virgil Application.|
 
 We will use `VirgilSDK` and `VirgilCrypto` libraries to generate and sign the JWTs on your server.
@@ -122,8 +116,7 @@ ___
 
 <SectionTitle>Set Up Your Client</SectionTitle>
 
-On the client side we will use the `e3kit` SDK for creating and storing the user's private key on their device an publish the appropriate public key
-in the Virgil Cloud.
+On the client side we will use the `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud.
 
 ## Install e3kit
 
@@ -140,8 +133,7 @@ Use your package manager to download the e3kit SDK into your mobile or web proje
 
 ## Initialize e3kit
 
-In order to interact with the Virgil Cloud, the e3kit SDK must be provided a callback that it will call to fetch the Virgil JWT for the
-current user from your backend. In the code sample below, replace the `YOUR_ENDPOINT` with the URL of your backend endpoint.
+In order to interact with the Virgil Cloud, the e3kit SDK must be provided with a callback that it will call to fetch the Virgil JWT from your backend for the current user. In the code sample below, replace the `YOUR_ENDPOINT` placeholder with your backend endpoint's URL.
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsInitializeE3kit}</CodeSnippet>
@@ -149,14 +141,14 @@ current user from your backend. In the code sample below, replace the `YOUR_ENDP
 	<CodeSnippet language={SnippetLanguage.swift} title="Swift">{SwiftInitializeE3kit}</CodeSnippet>
 </CodeSnippets>
 
-The `EThree.initialize()` function gets user's JWT, checks whether a user has a private key in a local storage and a published public key on Virgil Cloud. The `EThree.initialize()` function must be used on SingUp and SignIn flows.
+The `EThree.initialize()` function gets the user's JWT, checks whether a user already has a private key saved in local storage and a published public key on Virgil Cloud. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
 ___
 
 <SectionTitle>Register Users on Virgil Cloud</SectionTitle>
 
-User Registration on Virgil Cloud is a process of generating a keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference).
+User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference).
 
-To register users on Virgil Cloud you have to use `EThree.register()` method on the Sign Up flow in your application:
+To register users on Virgil Cloud you have to use `EThree.register()` method during the Sign Up flow in your application:
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsRegister}</CodeSnippet>
@@ -170,14 +162,12 @@ ___
 
 <SectionTitle>Sign and Encrypt Data</SectionTitle>
 
-As previously noted, we encrypt data to hide the message's real content from other parties. But a recipient also needs to be sure that a third party has
-not modified the message's content and that the message actually came from the correct sender. So, in addition to encrypting message data for data security,
-e3kit uses digital signatures to verify data integrity.
+As previously noted, we encrypt data to hide the message's real content from other parties. But a recipient also needs to be sure that a third party has not modified the message's content and that the message actually came from the expected, authorized sender. So, in addition to encrypting message data for data security, e3kit uses digital signatures to verify data integrity.
 
-`eThree.encrypt(data, publicKeys)` signs the data with the sender's private key and encrypts them for recipients' public keys.
+`eThree.encrypt(data, publicKeys)` signs the data with the sender's private key and encrypts the message for recipients' public keys.
 
-The `publicKeys` parameter is an array of public keys of the recipients. You need to use the `eThree.lookupPublicKeys(identities)` method to retrieve
-the public keys of users by their `identities`.
+The `publicKeys` parameter is an array of all the recipients' public keys. In order to retrieve
+the public keys of users using their `identities` and generate this array, you'll need to use the `eThree.lookupPublicKeys(identities)` function.
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsSignEncrypt}</CodeSnippet>
@@ -186,16 +176,16 @@ the public keys of users by their `identities`.
 </CodeSnippets>
 
 >### **Multiple recipients: one ciphertext**
-> Even though multiple recipients are specified, the resulting ciphertext will be a single blob/string that all users in the recipient list can decrypt.
+> Even if a message is sent to multiple recipients, the resulting ciphertext (or encrypted data) will be a single blob/string that all users in the recipient list can decrypt.
 
 ---
 
 <SectionTitle>Decrypt Data and Verify Signature</SectionTitle>
 
-Now let's decrypt the data, then verify that they came from the claimed sender.
+Now let's decrypt the data, then verify that they came from the correct, expected sender.
 
-`eThree.decrypt(data, publicKey)` decrypts the data using the current user's private key. It also verifies the authenticity of the decrypted data with
-the `publicKey` parameter, which must be the public key of the sender of the message.
+`eThree.decrypt(data, publicKey)` decrypts the data using the recipient's private key (remember that the sender looked up the recipient's public key and encrypted the message so that only the recipient's corresponding private key could decrypt the message). It also verifies the authenticity of the decrypted data with
+the `publicKey` parameter, by confirming that the public key on the message signature is the public key of the expected sender.
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsDecryptVerify}</CodeSnippet>
@@ -207,11 +197,9 @@ ___
 
 <SectionTitle>What's next?</SectionTitle>
 
-## Sign In from multiple devices
+## Sign in from multiple devices
 
-When users Sign Up at your server side, they use your client-application on their specific device (phone, laptop etc.), but further, probably users will be able to Sign In to your application from multiple devices/browsers.
-
-There are two ways to manage users with e3kit:
+When you're setting up e3kit, you'll need to decide if you'll support single- or multi-device use:
 
 - **single-device use**: your users will only be able to access encrypted messages or data from a single device (smartphone or browser)
 - **multi-device use**: your users will be able to access encrypted messages or data from multiple devices (both smartphone and browser)
@@ -220,7 +208,7 @@ There are two ways to manage users with e3kit:
 
 To enable  **multi-device use** in your application:
 
-- **first**, use the `eThree.backupPrivateKey(pwd)` function to set a **backup password** and upload the encrypted private key to the cloud. The function must be called from the device that the user used to register his/her public key.
+- **first**, use the `eThree.backupPrivateKey(pwd)` function to set a **backup password** and upload the encrypted private key to the cloud. The function must be called from the device that the user initially used to register his/her public key.
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsBackup}</CodeSnippet>
@@ -229,7 +217,7 @@ To enable  **multi-device use** in your application:
 </CodeSnippets>
 
 
-- **second**, on each new device use the `EThree.restorePrivateKey(pwd)` method to download the user private key from the cloud and decrypt it:
+- **second**, on each new device use the `EThree.restorePrivateKey(pwd)` method to download the user's private key from the cloud and decrypt it:
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsRestore}</CodeSnippet>
@@ -237,12 +225,12 @@ To enable  **multi-device use** in your application:
 	<CodeSnippet language={SnippetLanguage.swift} title="Swift">{SwiftRestore}</CodeSnippet>
 </CodeSnippets>
 
-If you are not sure whether the user is using a new device or not you can use `eThree.hasPrivateKey()` method to check if user's private key is present on this device. If user's private key is present at the device, then you can encrypt/decrypt data; otherwise use the `EThree.restorePrivateKey(pwd)` method to restore user's private key with their backup password.
+If you are not sure whether the user is using the original device or a new device, you can use `eThree.hasPrivateKey()` method to check if the user's private key already exists on the device. If the user's private key is indeed present on the device, then you can encrypt/decrypt data. Otherwise use the `EThree.restorePrivateKey(pwd)` method to access the user's private key using their backup password.
 
 >### **How strongly are my users' private keys protected in the cloud?**
 >We know it might seem counter-intuitive to allow a private key off your users' devices. But it's actually quite safe. The function uses elliptic curve BLS12-381 (built by the zCash cryptocurrency team) to derive a 128-bit strong key from the password specified. This key is used to encrypt your user's private key before e3kit saves it in the Virgil Cloud.
 
-## Rotate User Keys
+## Rotate user keys
 
 Use this flow when a user's public key was published, but the private key has been lost (became not valid). The `EThree.rotatePrivateKey()` method publishes a new public key and marks the previous public key as outdated.
 
@@ -254,9 +242,9 @@ Use this flow when a user's public key was published, but the private key has be
 
 > If a user loses their private key before making a backup, they won't be able to decrypt previously encrypted data.
 
-## Change Backup Password
+## Change backup password
 
-When user wants to change their password that was used to back up a private key, use the `EThree.resetPrivateKeyBackup(pwd)` method to do it. The `EThree.resetPrivateKeyBackup(pwd)` re-encrypts user's private key on a device and uploads it to the Virgil Cloud.
+When user wants to change the password that was used to back up their private key, use the `EThree.resetPrivateKeyBackup(pwd)` method to re-encrypt the user's private key on their device with the new password, and then upload it to the Virgil Cloud.
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsChangePass}</CodeSnippet>
@@ -264,9 +252,9 @@ When user wants to change their password that was used to back up a private key,
 	<CodeSnippet language={SnippetLanguage.swift} title="Swift">{SwiftChangePass}</CodeSnippet>
 </CodeSnippets>
 
-## Reset User Key
+## Reset user key
 
-To delete user's encrypted private key from Virgil Cloud use the `EThree.resetPrivateKeyBackup(pwd)` method:
+To delete a user's encrypted private key from Virgil Cloud, use the `EThree.resetPrivateKeyBackup(pwd)` method:
 
 <CodeSnippets activeLanguage={SnippetLanguage.js}>
 	<CodeSnippet language={SnippetLanguage.js} title="JavaScript" >{JsReset}</CodeSnippet>
@@ -274,7 +262,7 @@ To delete user's encrypted private key from Virgil Cloud use the `EThree.resetPr
 	<CodeSnippet language={SnippetLanguage.swift} title="Swift">{SwiftReset}</CodeSnippet>
 </CodeSnippets>
 
-## Clean Up Device
+## Clean up device
 
 To delete user's private key from their device use the `EThree.cleanUp()` method:
 
