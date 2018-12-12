@@ -1,6 +1,105 @@
-це оригінал
-+ 1 - добавив тут
-+ 2 - ще один комент
+# Search Cards by user's identity
 
-hello i need some not working - new1111
-12 123 11 11
+This guide shows how to search for users Cards on [Virgil Cards Service](/api-reference/card-service/v5) by their `identity`.
+
+<Info>Remember that each user can have multiple Cards attached to their identity.</Info>
+
+## Prerequisites for work
+<Collapse title="### Install SDK & Setup Virgil Crypto">
+#{ import "/how_to/setup/v5/__code__/install_sdk/%lang%#install_sdk" }
+</Collapse>
+
+<Collapse title="### Setup authentication on a client side and send a JWT request">
+To make API calls to the Virgil Cloud, you'll need to provide the users of your app with a JSON Web Token (further, JWT) that contains the user's identity which is a string that uniquely identifies each user in your application.
+
+Virgil SDK allows you to use Virgil token-generation functionality to generate a JWT. After you installed a Virgil SDK package on a client side you'll need to setup a `jwtProvider` for providing users with a unique JWT.
+
+#### Setup JWT provider
+use these lines of code to admit which source for JWT generation you prefer to use in your project:
+
+#{ import "/how_to/setup/v5/__code__/authentication_jwt/%lang%#setup_jwt" }
+</Collapse>
+
+<Collapse title="### Setup authentication on a server side and generate a JWT">
+
+
+**Collect your Virgil developer credentials**
+
+<table class="params">
+<thead>
+  <tr>
+    <th>Parameter</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>APP_ID</td>
+    <td>ID of your Application at [Virgil Dashboard](https://dashboard.virgilsecurity.com)</td>
+  </tr>
+
+  <tr>
+    <td>API_KEY_ID</td>
+    <td>A unique string value that identifies your account at the Virgil developer portal</td>
+  </tr>
+
+  <tr>
+    <td>API_KEY</td>
+    <td>A Private Key that is used to sign API calls to Virgil Services. For security, you will only be shown the API Private Key when the key is created, don't forget to save it in a secure location for the next step</td>
+  </tr>
+
+</tbody>
+</table>
+
+Next, you'll setup the `JwtGenerator` using the Virgil SDK.
+
+<Info>  You'll use your API Key that was created at Virgil Dashboard, that's why, for security, you have to generate JWT on your server side. </Info>
+
+Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application.
+
+Here is an example of how to generate a JWT:
+
+#{ import "/how_to/setup/v5/__code__/authentication_jwt/%lang%#jwt_generation" }
+</Collapse>
+
+<Collapse title="### Setup CardVerifier">
+
+`VirgilCardVerifier` helps you automatically verify signatures of a user's Card, for example when you get a Card from Virgil Cards Service.
+
+By default, `VirgilCardVerifier` verifies only two signatures - a Card owner and Virgil Cards Service.
+
+Setup `VirgilCardVerifier` with the following lines of code:
+#{ import "/how_to/setup/v5/__code__/setup_card_verifier/%lang%#setup_card_verifier" }
+</Collapse>
+
+<Collapse title="### Setup Cards Manager to manage public Keys">
+
+With Cards Manager you can:
+- specify a JWT Provider.
+- specify a Crypto Library that you’re planning to use for crypto operations.
+- specify a Card Verifier that is used to verify signatures of a user's Card.
+
+### Set up Crypto Library
+Use the following lines of code to specify which crypto library (Virgil or your own) you prefer to use in your project:
+
+#{ import "/how_to/setup/v5/__code__/setup_card_manager/%lang%#setup_crypto" }
+
+## Initialize Card Manager
+
+Use the following lines of code to set up the Card Manager:
+
+#{ import "/how_to/setup/v5/__code__/setup_card_manager/%lang%#initialize_cardmanager" }
+
+</Collapse>
+
+## Search Users Cards
+
+Use the following code to search for Cards by `identity`:
+
+#{ import "/how_to/public_key_management/v5/__code__/%lang%#search_card_by_identity" }
+
+
+
+Use the following code to search for Cards by multiple `identities`
+
+#{ import "/how_to/public_key_management/v5/__code__/%lang%#search_card_by_identity" }
