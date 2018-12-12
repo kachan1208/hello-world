@@ -53,6 +53,8 @@ use these lines of code to admit which source for JWT generation you prefer to u
 
 Next, you'll setup the `JwtGenerator` using the Virgil SDK.
 
+<Info>  You'll use your API Key that was created at Virgil Dashboard, that's why, for security, you have to generate JWT on your server side. </Info>
+
 Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application.
 
 Here is an example of how to generate a JWT:
