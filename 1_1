@@ -93,13 +93,13 @@ Use the following lines of code to set up the Card Manager:
 </Collapse>
 
 ## Search Users Cards
+Using Virgil SDK you can search for Cards of a single user or multiple users.
 
-Use the following code to search for Cards by `identity`:
+Search for Cards of a single user:
 
 #{ import "/how_to/public_key_management/v5/__code__/%lang%#search_card_by_identity" }
 
 
-
-Use the following code to search for Cards by multiple `identities`
+Search for Cards of multiple users:
 
 #{ import "/how_to/public_key_management/v5/__code__/%lang%#search_card_by_identity" }
