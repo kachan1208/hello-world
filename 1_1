@@ -62,7 +62,7 @@ Here is an example of how to generate a JWT:
 #{ import "/how_to/setup/v5/__code__/authentication_jwt/%lang%#jwt_generation" }
 </Collapse>
 
-<Collapse title="### Setup CardVerifier">
+<Collapse title="### Setup Card Verifier">
 
 `VirgilCardVerifier` helps you automatically verify signatures of a user's Card, for example when you get a Card from Virgil Cards Service.
 
@@ -72,9 +72,9 @@ Setup `VirgilCardVerifier` with the following lines of code:
 #{ import "/how_to/setup/v5/__code__/setup_card_verifier/%lang%#setup_card_verifier" }
 </Collapse>
 
-<Collapse title="### Setup Cards Manager to manage public Keys">
+<Collapse title="### Setup Cards Manager">
 
-With Cards Manager you can:
+ With Virgil Cards Manager you can:
 - specify a JWT Provider.
 - specify a Crypto Library that you’re planning to use for crypto operations.
 - specify a Card Verifier that is used to verify signatures of a user's Card.
