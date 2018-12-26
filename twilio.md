@@ -38,7 +38,7 @@ In order to have a possibility to encrypt/decrypt messages and use a Twilio Prog
 For this tutorial we've created a sample backend code that demonstrates how to combine Virgil and Twilio JWT generation. To setup and run the sample backend locally, head over to [Twilio-Sample-Backend-NodeJS](https://github.com/VirgilSecurity/twilio-sample-backend-nodejs) GitHub repo and follow the instructions in README.
 
 ## Step 2: Set Up Your Client
-On the client side we will use the e3kit SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud.
+On the client side we will use the `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud.
 
 ### Install e3kit
 Use your package manager to download the e3kit SDK into your mobile or web project.
@@ -115,7 +115,7 @@ The `EThree.initialize()` function gets the user's JWT, checks whether a user al
 User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference).
 
 
-To register users on Virgil Cloud you have to use EThree.register() method during the Sign Up flow in your application:
+To register users on Virgil Cloud you have to use `EThree.register()` method during the Sign Up flow in your application:
 
 ```javascript
 // TODO: initialize
@@ -189,7 +189,7 @@ There are two ways to manage users with e3kit:
 
 To enable multi-device use in your application:
 
-- **first**, use the eThree.backupPrivateKey(pwd) function to set a backup password and upload the encrypted private key to the cloud. The function must be called from the device that the user initially used to register his/her public key.
+- **first**, use the `eThree.backupPrivateKey(pwd)` function to set a backup password and upload the encrypted private key to the cloud. The function must be called from the device that the user initially used to register his/her public key.
 
 ```javascript
 // TODO: initialize and register user (see EThree.initialize and EThree.register)
@@ -201,7 +201,7 @@ eThree.backupPrivateKey(keyPassword)
     .catch(e => console.error('error: ', e));
 ```
 
-- **second**, on each new device use the EThree.restorePrivateKey(pwd) method to download the user's private key from the cloud and decrypt it:
+- **second**, on each new device use the `EThree.restorePrivateKey(pwd)` method to download the user's private key from the cloud and decrypt it:
 ```javascript
 // TODO: initialize, register user and backup private key
 // (see EThree.initialize, EThree.register and EThree.backupPrivateKey)
