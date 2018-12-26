@@ -1,6 +1,8 @@
 # Add End-to-End Encryption to your Twilio Product using E3kit
 In this tutorial, we will help you add end-to-end encryption to your product to secure your messages and user data that you deliver using Twilio Programmable Chat.
 
+
+
 ### How Does End-to-End Encryption Work?
 End-to-end encryption consists of securing data between two users or endpoints using a private & public key for each user or endpoint:
 
@@ -19,8 +21,8 @@ This setup enables users to encrypt a message on their phone or computer, send i
 ## Step 1: Set Up Your Backend
 We assume that you already have a Twilio Project. If you don't, please create one now. Also, we assume that you have a basic backend server for your app. Your server must be able to create and store user records in persistent storage and provide a user authentication strategy, whether that's a simple username/password or a third-party provider like GitHub or Facebook.
 
-### Provide your users access to Virgil Cloud
-To make API calls to the Virgil Cloud, you'll need to provide the users of your app with a JWT that contains the user's `identity` which is a string that uniquely identifies each user in your application. For this tutorial we'll assume that your user records have a unique ID assigned by the database, known as `uid`, and we will use that as their `identity`.
+### Provide your users access to Virgil and Twilio Cloud
+To make API calls to the Virgil Cloud, you'll need to provide the users of your app with a JWT that contains the user's `identity` which is a string that uniquely identifies each user in your application. For this tutorial we'll assume that your user records have a unique ID assigned by the database, known as `uid`, and we will use that as their `identity`. 
 
 > You can use any string value for the user identity as long as it's unique for each user. For security reasons, avoid using fields that contain any personally identifiable information such as name or email address, especially if your product needs to comply with regulations such as HIPAA and GDPR.
 
@@ -31,7 +33,9 @@ JWTs must be generated on the server-side for several reasons:
 
 > JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at this article.
 
-### Generate JWT 
+The same situation with access to Twilio Cloud. In order to use a functoonalitty of Twilio Programmable Chat use have to provide your users with a Virgil Twilio.
+
+### Generate Virgil and Twilio JWT 
 
 In order to have a possibility to encrypt/decrypt messages and use a Twilio Programmable Chat, your users have to be authenticated using JWT at Virgil and Twilio services. So, you need a backend code that generates Virgil and Twilio JWTs. 
 
@@ -39,6 +43,7 @@ For this tutorial we've created a sample backend code that demonstrates how to c
 
 ## Step 2: Set Up Your Client
 On the client side we will use the `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud.
+
 
 ### Install e3kit
 Use your package manager to download the e3kit SDK into your mobile or web project.
