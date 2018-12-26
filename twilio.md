@@ -133,11 +133,13 @@ eThree.register()
 ```
 There is no need to use `EThree.register()` method on Sign In flow.
 
+## Step 4: Create a Twilio Channel 
+Virgil doesn't provide you with any functionality to create or manage users's channels or massages. So, now you have to use Twlio SDK to create a [channel for users conversation](https://www.twilio.com/docs/chat/channels). 
 
+## Step 5: Sign and Encrypt Messages 
+Once you're a member of a channel, you can encrypt and send a message to it. As previously noted, we encrypt data to hide the message's real content from other parties. But a recipient also needs to be sure that a third party has not modified the message's content and that the message actually came from the expected, authorized sender. So, in addition to encrypting message data for data security, e3kit uses digital signatures to verify data integrity.
 
-## Step 4: Sign and Encrypt Data
-As previously noted, we encrypt data to hide the message's real content from other parties. But a recipient also needs to be sure that a third party has not modified the message's content and that the message actually came from the expected, authorized sender. So, in addition to encrypting message data for data security, e3kit uses digital signatures to verify data integrity.
-
+So, now you need to use Virgil E3Kit SDK to ecrypt messages and Twilio SDK to transmitt these messages.
 
 `eThree.encrypt(data, publicKeys)` signs the data with the sender's private key and encrypts the message for recipients' public keys.
 
@@ -162,7 +164,7 @@ const encryptedText = await eThree.encrypt('this text will be encrypted', public
 > Multiple recipients: one ciphertext. Even if a message is sent to multiple recipients, the resulting ciphertext (or encrypted data) will be a single blob/string that all users in the recipient list can decrypt.
 
 
-## Step 5: Decrypt Data and Verify Signature
+## Step 6: Decrypt Data and Verify Signature
 Now let's decrypt the data, then verify that they came from the correct, expected sender.
 
 `eThree.decrypt(data, publicKey)` decrypts the data using the recipient's private key (remember that the sender looked up the recipient's public key and encrypted the message so that only the recipient's corresponding private key could decrypt the message). It also verifies the authenticity of the decrypted data with the publicKey parameter, by confirming that the public key on the message signature is the public key of the expected sender.
