@@ -29,11 +29,11 @@ JWTs must be generated on the server-side for several reasons:
 
 > JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at this article.
 
-### Generate JWT
-We will use VirgilSDK and VirgilCrypto libraries to generate and sign the JWTs on your server.
+### Generate JWT 
 
-For this tutorial we've created a sample backend that demonstrates how you can setup own backend to generate the Virgil JWTs. To setup and run the sample backend locally, head over to [Twilio-Sample-Backend-NodeJS](https://github.com/VirgilSecurity/twilio-sample-backend-nodejs) GitHub repo and follow the instructions in README.
+In order to have a possibility to encrypt/decrypt messages and use a Twilio Programmable Chat, your users have to be authenticated using JWT at Virgil and Twilio services. So, you need a backend code that generates Virgil and Twilio JWTs. 
 
+For this tutorial we've created a sample backend code that demonstrates how to combine Virgil and Twilio JWT generation. To setup and run the sample backend locally, head over to [Twilio-Sample-Backend-NodeJS](https://github.com/VirgilSecurity/twilio-sample-backend-nodejs) GitHub repo and follow the instructions in README.
 
 ## Step 2: Set Up Your Client
 On the client side we will use the e3kit SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud.
