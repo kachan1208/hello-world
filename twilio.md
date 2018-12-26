@@ -4,7 +4,7 @@ In this tutorial, we will help you add end-to-end encryption to your product to 
 ### How Does End-to-End Encryption Work?
 End-to-end encryption consists of securing data between two users or endpoints using a private & public key for each user or endpoint:
 
-<a href="https://virgilsecurity.com"><img src="my_new_img/e3kit_twilio.jpg"></a>
+<a href="https://virgilsecurity.com"><img src="my_new_img/e3kit_twilio.jpg" width=100%></a>
 
 - The public key is published to Virgil Cards Service, part of the Virgil Cloud PKI. When your users want to send a message, the Virgil SDK uses the recipient's public key to encrypt the message data in a way that only the recipient's corresponding private key can decrypt it.
 - The private key is kept on the end-user's device, enabling the user and only the user to decrypt any messages or data that other users sent to them. It's similar to the relationship between a public mailing address and a private mailbox. You look up someone's address to send them a letter, but only they can unlock their mailbox to open and read the letter.
