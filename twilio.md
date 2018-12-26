@@ -33,27 +33,27 @@ JWTs must be generated on the server-side for several reasons:
 
 > JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at this article.
 
-The same situation with access to Twilio Cloud. In order to use a functoonalitty of Twilio Programmable Chat use have to provide your users with a Virgil Twilio.
+The same situation with access to Twilio Cloud. In order to use a functionality of the Twilio Programmable Chat you have to provide your users with a Twilio JWT.
 
 ### Generate Virgil and Twilio JWT 
 
 In order to have a possibility to encrypt/decrypt messages and use a Twilio Programmable Chat, your users have to be authenticated using JWT at Virgil and Twilio services. So, you need a backend code that generates Virgil and Twilio JWTs. 
 
-For this tutorial we've created a sample backend code that demonstrates how to combine Virgil and Twilio JWT generation. To setup and run the sample backend locally, head over to [Twilio-Sample-Backend-NodeJS](https://github.com/VirgilSecurity/twilio-sample-backend-nodejs) GitHub repo and follow the instructions in README.
+For this tutorial we've created a sample backend code that demonstrates how to combine Virgil and Twilio JWT generation. To setup and run the sample backend locally, head over to [Twilio-Sample-Backend-NodeJS](https://github.com/VirgilSecurity/twilio-sample-backend-nodejs) GitHub repo and follow the instructions in README. You can easily use it as an example to build own backend for a JWT generation.
 
 ## Step 2: Set Up Your Client
-On the client side we will use the `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud.
+Virgil Security provides you with the Virgil `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud. 
 
 
 ### Install e3kit
-Use your package manager to download the e3kit SDK into your mobile or web project.
+Use your package manager to download the Virgil e3kit SDK into your mobile or web project.
 
 ```shell
 npm install -S @virgilsecurity/e3kit
 ```
 
 ### Initialize e3kit
-In order to interact with the Virgil Cloud, the e3kit SDK must be provided with a callback that it will call to fetch the Virgil JWT from your backend for the current user.
+In order to interact with the Virgil and Twilio Cloud, the Virgil e3kit SDK must be provided with a callback that it will call to fetch the Virgil and Twilio JWT from your backend for the current user.
 
 ```javascript
 import { EThree } from '@virgilsecurity/e3kit';
@@ -112,12 +112,12 @@ const eThree = await eThreePromise;
 ```
 
 
-The `EThree.initialize()` function gets the user's JWT, checks whether a user already has a private key saved in local storage and a published public key on Virgil Cloud. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
+The `EThree.initialize()` function gets the user's Virgil JWT, checks whether a user already has a private key saved in local storage and a published public key on Virgil Cloud. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
 
 
 
 ## Step 3: Register Users on Virgil Cloud
-User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference).
+User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference). 
 
 
 To register users on Virgil Cloud you have to use `EThree.register()` method during the Sign Up flow in your application:
@@ -132,6 +132,7 @@ eThree.register()
     .catch(e => console.error('error: ', e));
 ```
 There is no need to use `EThree.register()` method on Sign In flow.
+
 
 
 ## Step 4: Sign and Encrypt Data
