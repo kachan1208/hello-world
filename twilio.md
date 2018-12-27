@@ -114,7 +114,7 @@ const eThree = await eThreePromise;
 ```
 
 
-The `EThree.initialize()` function gets the user's Virgil JWT, checks whether a user already has a private key saved in local storage and a published public key on Virgil Cloud. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
+The `EThree.initialize()` function gets the user's Virgil JWT, parses it, initializes the library and returns its instance, which is further used with user's `identity`. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
 
 ## Step 3: Register Users on Virgil Cloud
 User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference). 
@@ -143,7 +143,7 @@ So, now you need to use Virgil E3Kit SDK to ecrypt messages and Twilio SDK to tr
 
 `eThree.encrypt(data, publicKeys)` signs the data with the sender's private key and encrypts the message for recipients' public keys.
 
-The publicKeys parameter is an array of the recipients' public keys. In order to retrieve the public keys of users using their identities and generate this array, you'll need to use the `eThree.lookupPublicKeys(identities)` method.
+The publicKeys parameter is a list of the recipients' public keys. In order to retrieve the public keys of users using their identities and generate this list, you'll need to use the `eThree.lookupPublicKeys(identities)` method.
 
 ```javascript
 async function sendMessage(e3kit, channel, message) {
@@ -162,6 +162,8 @@ Now let's decrypt the data, then verify that they came from the correct, expecte
 You can learn about receiving messages using Twilio [here](https://www.twilio.com/docs/chat/channels#get-the-most-recent-messages-from-a-channel).
 
 `eThree.decrypt(data, publicKey)` decrypts the data using the recipient's private key (remember that the sender looked up the recipient's public key and encrypted the message so that only the recipient's corresponding private key could decrypt the message). It also verifies the authenticity of the decrypted data with the publicKey parameter, by confirming that the public key on the message signature is the public key of the expected sender.
+
+Note that when a new recepient joins a channel, he won't be able to read the message history of the channel because it wasn't encrypted with his key.
 
 ```javascript
 // TODO: initialize SDK and register users - see EThree.initialize and EThree.register
