@@ -146,19 +146,12 @@ So, now you need to use Virgil E3Kit SDK to ecrypt messages and Twilio SDK to tr
 The publicKeys parameter is an array of the recipients' public keys. In order to retrieve the public keys of users using their identities and generate this array, you'll need to use the `eThree.lookupPublicKeys(identities)` method.
 
 ```javascript
-// TODO: initialize and register user (see EThree.initialize and EThree.register)
-
-// aliceUID and bobUID - strings with identities of users that receive message
-const usersToEncryptTo = [aliceUID, bobUID];
-
-// Lookup user public keys
-const publicKeys = await eThree.lookupPublicKeys(usersToEncryptTo);
-
-// Encrypt data using target user public keys
-const encryptedData = await eThree.encrypt(new ArrayBuffer(), publicKeys);
-
-// Encrypt text using target user public keys
-const encryptedText = await eThree.encrypt('this text will be encrypted', publicKeys);
+async function sendMessage(e3kit, channel, message) {
+    const membersIdentities = await channel.getMembers().then(members => members.map(member => member.identity));
+    const publicKeys = await e3kit.lookupPublicKeys(membersIdentities);
+    const encryptedMessage = await e3kit.encrypt(message, publicKeys);
+    return channel.sendMessage(encryptedMessage);
+}
 ```
 
 > Multiple recipients: one ciphertext. Even if a message is sent to multiple recipients, the resulting ciphertext (or encrypted data) will be a single blob/string that all users in the recipient list can decrypt.
@@ -172,15 +165,16 @@ Now let's decrypt the data, then verify that they came from the correct, expecte
 ```javascript
 // TODO: initialize SDK and register users - see EThree.initialize and EThree.register
 
-// bobUID - string with sender identity
-// Lookup origin user public keys
-const publicKey = await eThree.lookupPublicKeys(bobUID);
-
-// Decrypt data and verify if it was really written by Bob
-const decryptedData = await eThree.decrypt(encryptedData, publicKey);
-
-// Decrypt text and verify if it was really written by Bob
-const decryptedText = await eThree.decrypt(encryptedText, publicKey);
+async function getMessages(e3kit, channel) {
+    const messages = await channel.getMessages();
+    const totalMessages = messages.items.length;
+    for (i = 0; i < totalMessages; i++) {
+        const message = messages.items[i];
+        const authorPublicKey = await e3kit.lookupPublicKeys(message.author);
+        message.decryptedMessage = await e3kit.decrypt(message.body, authorPublicKey);
+    }
+    return messages.items;
+}
 ```
 
 # What's Next?
