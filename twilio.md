@@ -3,23 +3,25 @@ In this tutorial, we will help you add end-to-end encryption to your product to 
 
 
 
-### How Does End-to-End Encryption Work?
+### How Does End-to-End Encryption Work With Twilio?
 End-to-end encryption consists of securing data between two users or endpoints using a private & public key for each user or endpoint:
 
 <a href="https://virgilsecurity.com"><img src="my_new_img/e3kit_twilio.jpg" width=100%></a>
 
+- Twilio SDK on the Client side allows users to send and receive messages, join groups and communicate with Twilio backend in other ways, while Virgil handles encryption of users' messages and data.
+- Virgil e3kit SDK on the Client side allows you to generate a public and a private key for your user.
 - The public key is published to Virgil Cards Service, part of the Virgil Cloud PKI. When your users want to send a message, the Virgil SDK uses the recipient's public key to encrypt the message data in a way that only the recipient's corresponding private key can decrypt it.
 - The private key is kept on the end-user's device, enabling the user and only the user to decrypt any messages or data that other users sent to them. It's similar to the relationship between a public mailing address and a private mailbox. You look up someone's address to send them a letter, but only they can unlock their mailbox to open and read the letter.
 
 The address book (Virgil's Cards Service), mailing address (public key) and mailbox key (private key) are related to each other, but can't be traced to each other in any way that would compromise the security of the system. End-to-end encryption also locks the letter (message data), and only the recipient has the key to unlock it.
 
-This setup enables users to encrypt a message on their phone or computer, send it over the Internet to a recipient without any chance of another party reading it in transit or on the server, and have it be decrypted only by the recipient on their phone or computer. This all works seamlessly for the end-users and it only takes a few lines of code to implement using e3kit SDK.
+This setup enables users to encrypt a message on their phone or computer, send it over the Internet with the help of Twilio to a recipient without any chance of another party reading it in transit or on the server, and have it be decrypted only by the recipient on their phone or computer. This all works seamlessly for the end-users and it only takes a few lines of code to implement using e3kit SDK.
 
 
 # Get Started
 
 ## Step 1: Set Up Your Backend
-We assume that you already have a Twilio Project. If you don't, please create one now. Also, we assume that you have a basic backend server for your app. Your server must be able to create and store user records in persistent storage and provide a user authentication strategy, whether that's a simple username/password or a third-party provider like GitHub or Facebook.
+We assume that you already have a Twilio Project. If you don't, please create one now. Also, we assume that you have a basic backend server for your app. Your server must be able to create and store user records in persistent storage and provide a user authentication strategy, whether that's a simple username/password or a third-party provider like GitHub or Facebook, so make sure to implement that feature as well.
 
 ### Provide your users access to Virgil and Twilio Cloud
 To make API calls to the Virgil Cloud, you'll need to provide the users of your app with a JWT that contains the user's `identity` which is a string that uniquely identifies each user in your application. For this tutorial we'll assume that your user records have a unique ID assigned by the database, known as `uid`, and we will use that as their `identity`. 
@@ -37,13 +39,13 @@ The same situation with access to Twilio Cloud. In order to use a functionality 
 
 ### Generate Virgil and Twilio JWT 
 
-In order to have a possibility to encrypt/decrypt messages and use a Twilio Programmable Chat, your users have to be authenticated using JWT at Virgil and Twilio services. So, you need a backend code that generates Virgil and Twilio JWTs. 
+In order to be able to encrypt/decrypt messages and use a Twilio Programmable Chat, your users have to be authenticated using JWT at Virgil and Twilio services. So, you need a backend code that generates Virgil and Twilio JWTs with the help of Virgil SDK and Twilio Helper on your Server side. 
 
 For this tutorial we've created a sample backend code that demonstrates how to combine Virgil and Twilio JWT generation. To setup and run the sample backend locally, head over to [Twilio-Sample-Backend-NodeJS](https://github.com/VirgilSecurity/twilio-sample-backend-nodejs) GitHub repo and follow the instructions in README. You can easily use it as an example to build own backend for a JWT generation.
 
 ## Step 2: Set Up Your Client
 Virgil Security provides you with the Virgil `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud. 
-
+Everything else except for the cryptographic functions is handled by Twilio SDK, which you'll have to initialize on you Client side by yourself.
 
 ### Install e3kit
 Use your package manager to download the Virgil e3kit SDK into your mobile or web project.
@@ -114,11 +116,8 @@ const eThree = await eThreePromise;
 
 The `EThree.initialize()` function gets the user's Virgil JWT, checks whether a user already has a private key saved in local storage and a published public key on Virgil Cloud. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
 
-
-
 ## Step 3: Register Users on Virgil Cloud
 User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference). 
-
 
 To register users on Virgil Cloud you have to use `EThree.register()` method during the Sign Up flow in your application:
 
@@ -181,7 +180,8 @@ async function getMessages(e3kit, channel) {
 
 ## Sign in from multiple devices
 
-When users Sign Up at your server side, they use your client-application on their specific device (phone, laptop etc.), but further, probably users will be able to Sign In to your application from multiple devices/browsers.
+When users Sign Up at your server side, they use your Client application on their specific device (phone, laptop etc.), but further, users will probably be able to Sign In to your application from multiple devices/browsers.
+Twilio Programmable Chat allows you to store message history so that users can synchronize and restore it when Signed In on multiple devices. But a user won't be able to read their messages without a private key stored on the device the user Signed Up with. Therefore, Virgil provides functionality which allows to share user's private key between multiple devices securely, so that users can encrypt and fully access their message history.
 
 There are two ways to manage users with e3kit:
 - **single-device use**: your users will only be able to access encrypted messages or data from a single device (smartphone or browser)
