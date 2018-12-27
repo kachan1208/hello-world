@@ -45,7 +45,7 @@ For this tutorial we've created a sample backend code that demonstrates how to c
 
 ## Step 2: Set Up Your Client
 Virgil Security provides you with the Virgil `e3kit` SDK to create and store the user's private key on their device and publish the user's corresponding public key in the Virgil Cloud. 
-Everything else except for the cryptographic functions is handled by Twilio SDK, which you'll have to initialize on you Client side by yourself.
+Everything else except for the cryptographic functions is handled by Twilio SDK, which you'll have to [initialize](https://www.twilio.com/docs/chat/initializing-sdk-clients) on you Client side by yourself.
 
 ### Install e3kit
 Use your package manager to download the Virgil e3kit SDK into your mobile or web project.
@@ -136,9 +136,10 @@ There is no need to use `EThree.register()` method on Sign In flow.
 Virgil doesn't provide you with any functionality to create or manage users's channels or massages. So, now you have to use Twlio SDK to create a [channel for users conversation](https://www.twilio.com/docs/chat/channels). 
 
 ## Step 5: Sign and Encrypt Messages 
-Once you're a member of a channel, you can encrypt and send a message to it. As previously noted, we encrypt data to hide the message's real content from other parties. But a recipient also needs to be sure that a third party has not modified the message's content and that the message actually came from the expected, authorized sender. So, in addition to encrypting message data for data security, e3kit uses digital signatures to verify data integrity.
+Once you're a member of a channel, you can encrypt and send a message to it. You can find how to send messages to a channel using Twilio [here](https://www.twilio.com/docs/chat/channels#send-messages-to-a-channel).
+As previously noted, we encrypt data to hide the message's real content from other parties. But a recipient also needs to be sure that a third party has not modified the message's content and that the message actually came from the expected, authorized sender. So, in addition to encrypting message data for data security, e3kit uses digital signatures to verify data integrity.
 
-So, now you need to use Virgil E3Kit SDK to ecrypt messages and Twilio SDK to transmitt these messages.
+So, now you need to use Virgil E3Kit SDK to ecrypt messages and Twilio SDK to transmit these messages.
 
 `eThree.encrypt(data, publicKeys)` signs the data with the sender's private key and encrypts the message for recipients' public keys.
 
@@ -158,6 +159,7 @@ async function sendMessage(e3kit, channel, message) {
 
 ## Step 6: Decrypt Data and Verify Signature
 Now let's decrypt the data, then verify that they came from the correct, expected sender.
+You can learn about receiving messages using Twilio [here](https://www.twilio.com/docs/chat/channels#get-the-most-recent-messages-from-a-channel).
 
 `eThree.decrypt(data, publicKey)` decrypts the data using the recipient's private key (remember that the sender looked up the recipient's public key and encrypted the message so that only the recipient's corresponding private key could decrypt the message). It also verifies the authenticity of the decrypted data with the publicKey parameter, by confirming that the public key on the message signature is the public key of the expected sender.
 
