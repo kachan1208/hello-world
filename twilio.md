@@ -113,6 +113,14 @@ eThreePromise.then(eThree => { /* eThree.encrypt/decrypt/lookupPublicKeys */})
 const eThree = await eThreePromise;
 ```
 
+```swift
+// swift
+```
+
+```kotlin
+//kotlin
+```
+
 
 The `EThree.initialize()` function gets the user's Virgil JWT, parses it, initializes the library and returns its instance, which is further used with user's `identity`. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
 
@@ -129,6 +137,14 @@ await eThree.register();
 eThree.register()
     .then(() => console.log('success'))
     .catch(e => console.error('error: ', e));
+```
+
+```swift
+// swift
+```
+
+```kotlin
+//kotlin
 ```
 There is no need to use `EThree.register()` method on Sign In flow.
 
@@ -152,6 +168,14 @@ async function sendMessage(e3kit, channel, message) {
     const encryptedMessage = await e3kit.encrypt(message, publicKeys);
     return channel.sendMessage(encryptedMessage);
 }
+```
+
+```swift
+// swift
+```
+
+```kotlin
+//kotlin
 ```
 
 > Multiple recipients: one ciphertext. Even if a message is sent to multiple recipients, the resulting ciphertext (or encrypted data) will be a single blob/string that all users in the recipient list can decrypt.
@@ -178,6 +202,14 @@ async function getMessages(e3kit, channel) {
     }
     return messages.items;
 }
+```
+
+```swift
+// swift
+```
+
+```kotlin
+//kotlin
 ```
 
 # What's Next?
