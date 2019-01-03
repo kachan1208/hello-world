@@ -162,7 +162,7 @@ eThree.register()
 There is no need to use `EThree.register()` method on Sign In flow.
 
 ## Step 4: Create a Twilio Channel 
-Virgil doesn't provide you with any functionality to create or manage users's channels or massages. So, now you have to use Twlio SDK to create a [channel for users conversation](https://www.twilio.com/docs/chat/channels). 
+Virgil doesn't provide you with any functionality to create or manage users' channels or messages. So, now you have to use Twlio SDK to create a [channel for users conversation](https://www.twilio.com/docs/chat/channels). 
 
 ## Step 5: Sign and Encrypt Messages 
 Once you're a member of a channel, you can encrypt and send a message to it. You can find how to send messages to a channel using Twilio [here](https://www.twilio.com/docs/chat/channels#send-messages-to-a-channel).
