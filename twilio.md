@@ -123,7 +123,7 @@ async function initialize(identity) {
     return { e3kit, twilioChat };
 }
 
-initalize('alice').then({ e3kit, twilioChat } => /* e3kit and twilioChat are initialized for 'alice' identity and ready for use */)
+initalize('alice').then(({ e3kit, twilioChat }) => /* e3kit and twilioChat are initialized for 'alice' identity and ready for use */)
 ```
 
 ```swift
