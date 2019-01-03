@@ -33,7 +33,7 @@ JWTs must be generated on the server-side for several reasons:
 - the client side should not have access to your sensitive API Key and
 - you need to authenticate the user making the request to get their identity.
 
-> JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at [this article](https://developer.virgilsecurity.com/docs/javascript/how-to/setup/v5/setup-authentication).
+> JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at this article.
 
 The same situation with access to Twilio Cloud. In order to use a functionality of the Twilio Programmable Chat you have to provide your users with a Twilio JWT.
 
@@ -59,7 +59,6 @@ In order to interact with the Virgil and Twilio Cloud, the Virgil e3kit SDK must
 
 ```javascript
 import { EThree } from '@virgilsecurity/e3kit';
-
 // This function returns a token that will be used to authenticate requests
 // to your backend.
 // This is a simplified solution without any real protection, so here you need use your
@@ -77,40 +76,54 @@ async function authenticate(identity) {
     if (!response.ok) {
         throw new Error(`Error code: ${response.status} \nMessage: ${response.statusText}`);
     }
-
     return response.json().then(data => data.authToken);
 }
 
-// Log in as `alice`
-const eThreePromise = authenticate('alice').then(authToken => {
+// This function makes authenticated request to GET /virgil-jwt endpoint
+// The token serves to make authenticated requests to Virgil Cloud
+async function getVirgilToken(authToken) {
+    const response = await fetch('http://localhost:3000/virgil-jwt', {
+        headers: {
+            // We use bearer authorization, but you can use any other mechanism.
+            // The point is only, this endpoint should be protected.
+            Authorization: `Bearer ${authToken}`,
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error code: ${response.status} \nMessage: ${response.statusText}`);
+    }
+
+    // If request was successful we return Promise which will resolve with token string.
+    return response.json().then(data => data.virgilToken);
+}
+
+// This function makes authenticated request to GET /twilio-jwt endpoint
+// Returned token is used by twilio library
+async function getTwilioToken(authToken) {
+    const response = await fetch('http://localhost:3000/twilio-jwt', {
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error code: ${response.status} \nMessage: ${response.statusText}`);
+    }
+    return response.json().then(data => data.twilioToken);
+}
+
+async function initialize(identity) {
     // E3kit will call this callback function and wait for the Promise resolve.
     // When it receives Virgil JWT it can do authorized requests to Virgil Cloud.
     // E3kit uses the identity encoded in the JWT as the current user's identity.
-    return EThree.initialize(getVirgilToken);
+    const authToken = await authenticate(identity);
+    const [e3kit, twilioChat] = await Promise.all([
+        E3kit.EThree.initialize(() => getVirgilToken(authToken)),
+        getTwilioToken(authToken).then(twilioToken => Twilio.Chat.Client.create(twilioToken))
+    ]);
+    return { e3kit, twilioChat };
+}
 
-    // This function makes authenticated request to GET /virgil-jwt endpoint
-    // The token it returns serves to make authenticated requests to Virgil Cloud
-    async function getVirgilToken() {
-        const response = await fetch('http://localhost:3000/virgil-jwt', {
-            headers: {
-                // We use bearer authorization, but you can use any other mechanism.
-                // The point is only, this endpoint should be protected.
-                Authorization: `Bearer ${authToken}`,
-            }
-        })
-        if (!response.ok) {
-            throw new Error(`Error code: ${response.status} \nMessage: ${response.statusText}`);
-        }
-
-        // If request was successful we return Promise which will resolve with token string.
-        return response.json().then(data => data.virgilToken);
-    }
-});
-
-// then you can get instance of EThree in that way:
-eThreePromise.then(eThree => { /* eThree.encrypt/decrypt/lookupPublicKeys */})
-// or
-const eThree = await eThreePromise;
+initalize('alice').then({ e3kit, twilioChat } => /* e3kit and twilioChat are initialized for 'alice' identity and ready for use */)
 ```
 
 ```swift
@@ -162,12 +175,11 @@ So, now you need to use Virgil E3Kit SDK to ecrypt messages and Twilio SDK to tr
 The publicKeys parameter is a list of the recipients' public keys. In order to retrieve the public keys of users using their identities and generate this list, you'll need to use the `eThree.lookupPublicKeys(identities)` method.
 
 ```javascript
-async function sendMessage(e3kit, channel, message) {
-    const membersIdentities = await channel.getMembers().then(members => members.map(member => member.identity));
-    const publicKeys = await e3kit.lookupPublicKeys(membersIdentities);
-    const encryptedMessage = await e3kit.encrypt(message, publicKeys);
-    return channel.sendMessage(encryptedMessage);
-}
+// channel - instance of Twilio Channel class
+const membersIdentities = await channel.getMembers().then(members => members.map(member => member.identity));
+const publicKeys = await e3kit.lookupPublicKeys(membersIdentities);
+const encryptedMessage = await e3kit.encrypt('Hello, this message will be encrypted', publicKeys);
+channel.sendMessage(encryptedMessage);
 ```
 
 ```swift
@@ -190,18 +202,9 @@ You can learn about receiving messages using Twilio [here](https://www.twilio.co
 Note that when a new recepient joins a channel, he won't be able to read the message history of the channel because it wasn't encrypted with his key.
 
 ```javascript
-// TODO: initialize SDK and register users - see EThree.initialize and EThree.register
-
-async function getMessages(e3kit, channel) {
-    const messages = await channel.getMessages();
-    const totalMessages = messages.items.length;
-    for (i = 0; i < totalMessages; i++) {
-        const message = messages.items[i];
-        const authorPublicKey = await e3kit.lookupPublicKeys(message.author);
-        message.decryptedMessage = await e3kit.decrypt(message.body, authorPublicKey);
-    }
-    return messages.items;
-}
+// message - instance of Twillio Message class
+const authorPublicKey = await e3kit.lookupPublicKeys(message.author);
+const decryptedMessage = await e3kit.decrypt(message.body, authorPublicKey);
 ```
 
 ```swift
