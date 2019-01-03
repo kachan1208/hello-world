@@ -33,7 +33,7 @@ JWTs must be generated on the server-side for several reasons:
 - the client side should not have access to your sensitive API Key and
 - you need to authenticate the user making the request to get their identity.
 
-> JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at this article.
+> JWT grants access to Virgil Cloud for a specific Virgil Application. Each JWT grants a user access to the Virgil Cloud for a specific Virgil Application and has a limited lifetime that is configured by you. However, best practice is to generate a JWT for the shortest amount of time feasible for your application. If you need more details about the structure of a JWT, please take a look at [this article](https://developer.virgilsecurity.com/docs/javascript/how-to/setup/v5/setup-authentication).
 
 The same situation with access to Twilio Cloud. In order to use a functionality of the Twilio Programmable Chat you have to provide your users with a Twilio JWT.
 
