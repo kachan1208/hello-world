@@ -381,6 +381,18 @@ eThree.backupPrivateKey(keyPassword)
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+
+eThree.backupPrivateKey(password: keyPassword) { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 - **second**, on each new device use the `EThree.restorePrivateKey(pwd)` method to download the user's private key from the cloud and decrypt it:
 ```javascript
 // TODO: initialize, register user and backup private key
@@ -393,6 +405,22 @@ if (!hasPrivateKey) await eThree.restorePrivateKey(keyPassword);
 eThree.hasPrivateKey().then(hasPrivateKey => {
     if (!hasPrivateKey) eThree.restorePrivateKey(keyPassword);
 });
+```
+
+```swift
+import VirgilE3Kit
+
+// TODO: init, register user, backup key (see EThree.initialize, EThree.register and EThree.backupPrivateKey)
+// Prerequisites: current local key should be cleaned up (see EThree.cleanUp)
+
+// Note: To know whether private key is present on device you can use hasLocalPrivateKey() function:
+if try! !hasLocalPrivateKey() {
+    eThree.restorePrivateKey(password: keyPassword) { error in
+        guard error == nil else {
+            // Error handling here
+        }
+    }
+}
 ```
 
 If you are not sure whether the user is using the original device or a new device, you can use `eThree.hasPrivateKey()` method to check if the user's private key already exists on the device. If the user's private key is indeed present on the device, then you can encrypt/decrypt data. Otherwise use the `EThree.restorePrivateKey(pwd)` method to access the user's private key using their backup password.
@@ -415,6 +443,18 @@ eThree.rotatePrivateKey()
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init, register user, lose key (see EThree.initialize and EThree.register)
+
+eThree.rotatePrivateKey { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 > If a user loses their private key before making a backup, they won't be able to decrypt previously encrypted data.
 
 ## Change Backup Password
@@ -432,6 +472,18 @@ eThree.changePassword(oldPassword, newPassword)
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+
+eThree.changePassword(from: oldPwd, to: newPwd) { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 ## Reset User Key
 
 To delete a user's encrypted private key from Virgil Cloud, use the `EThree.resetPrivateKeyBackup(pwd)` method:
@@ -446,6 +498,18 @@ eThree.resetPrivateKeyBackup(keyPassword)
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+
+eThree.resetPrivateKeyBackup(password: keyPassword) { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 ## Clean Up Device
 
 To delete a user's private key from their device use the `EThree.cleanUp()` method:
@@ -457,6 +521,13 @@ await eThree.cleanup();
 eThree.cleanup()
     .then(() => console.log('success'))
     .catch(e => console.error('error: ', e));
+```
+
+```swift
+import VirgilE3Kit
+// TODO: initialize and register user (see EThree.initialize and EThree.register)
+
+try! eThree.cleanUp()
 ```
 
 > When you want to clean up a user key be sure that you made its backup.
