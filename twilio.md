@@ -118,33 +118,9 @@ async function getVirgilToken(authToken) {
     return response.json().then(data => data.virgilToken);
 }
 
-// This function makes authenticated request to GET /twilio-jwt endpoint
-// Returned token is used by twilio library
-async function getTwilioToken(authToken) {
-    const response = await fetch('http://localhost:3000/twilio-jwt', {
-        headers: {
-            Authorization: `Bearer ${authToken}`,
-        }
-    })
-    if (!response.ok) {
-        throw new Error(`Error code: ${response.status} \nMessage: ${response.statusText}`);
-    }
-    return response.json().then(data => data.twilioToken);
-}
-
-async function initialize(identity) {
-    // E3kit will call this callback function and wait for the Promise resolve.
-    // When it receives Virgil JWT it can do authorized requests to Virgil Cloud.
-    // E3kit uses the identity encoded in the JWT as the current user's identity.
-    const authToken = await authenticate(identity);
-    const [e3kit, twilioChat] = await Promise.all([
-        E3kit.EThree.initialize(() => getVirgilToken(authToken)),
-        getTwilioToken(authToken).then(twilioToken => Twilio.Chat.Client.create(twilioToken))
-    ]);
-    return { e3kit, twilioChat };
-}
-
-initalize('alice').then(({ e3kit, twilioChat }) => /* e3kit and twilioChat are initialized for 'alice' identity and ready for use */)
+authenticate('alice')
+    .then(authToken => EThree.initialize(() => getVirgilToken(authToken)))
+    .then(e3kit => /* e3kit initialized for 'alice' identity and ready for use */)
 ```
 
 ```swift
@@ -213,6 +189,28 @@ EThree.initialize(tokenCallback: tokenCallback) { eThree, error in
 The `EThree.initialize()` function gets the user's Virgil JWT, parses it, initializes the library and returns its instance, which is further used with user's `identity`. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
 
 ### Initialize Twilio
+```javascript
+import Chat from 'twilio-chat';
+// This function makes authenticated request to GET /twilio-jwt endpoint
+// Returned token is used by twilio library
+async function getTwilioToken(authToken) {
+    const response = await fetch('http://localhost:3000/twilio-jwt', {
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+        }
+    })
+    if (!response.ok) {
+        throw new Error(`Error code: ${response.status} \nMessage: ${response.statusText}`);
+    }
+    return response.json().then(data => data.twilioToken);
+}
+
+// authToken - result of authenticate function from previous snippet
+getTwilioToken(authToken)
+    .then(twilioToken => Chat.Client.create(twilioToken))
+    .then(twilioChat => /* twilioChat initialized for 'alice' identity and ready for use */)
+```
+
 ```swift
 import TwilioChatClient
 import VirgilSDK
