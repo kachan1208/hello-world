@@ -50,8 +50,29 @@ Everything else except for the cryptographic functions is handled by Twilio SDK,
 ### Install e3kit
 Use your package manager to download the Virgil e3kit SDK into your mobile or web project.
 
+Javascript
 ```shell
 npm install -S @virgilsecurity/e3kit
+```
+
+Swift
+```shell
+// CocoaPods is a dependency manager for Cocoa projects.
+// You can install it with the following command:
+
+$ gem install cocoapods
+
+// to integrate Virgil E3Kit into your Xcode project using CocoaPods, specify it in your Podfile:
+
+target '<Your Target Name>' do
+use_frameworks!
+
+pod 'VirgilE3Kit', '~> 0.3.0'
+end
+
+// then, run the following command:
+
+$ pod install
 ```
 
 ### Initialize e3kit
@@ -127,7 +148,61 @@ initalize('alice').then(({ e3kit, twilioChat }) => /* e3kit and twilioChat are i
 ```
 
 ```swift
-// swift
+import VirgilE3Kit
+import VirgilSDK
+
+let connection = HttpConnection()
+
+// This function returns a token that will be used to authenticate requests
+// to your backend.
+// This is a simplified solution without any real protection, so here you need
+// use your application authentication mechanism.
+let authCallback = { () -> String in
+    let url = URL(string: "http://localhost:3000/authenticate")!
+    let headers = ["Content-Type": "application/json"]
+    let params = ["identity": identity]
+    let requestBody = try! JSONSerialization.data(withJSONObject: params,
+                                                  options: [])
+    let request = Request(url: url, method: .post,
+                          headers: headers, body: requestBody)
+    let resonse = try! connection.send(request)
+
+    let json = try! JSONSerialization.jsonObject(with: resonse.body!,
+                                                 options: []) as! [String: Any]
+    let authToken = json["authToken"] as! String
+
+    return authToken
+}
+
+let authToken = authCallback()
+
+let url = URL(string: "http://localhost:3000/virgil-jwt")!
+// We use bearer authorization, but you can use any other mechanism.
+// The point is only, this endpoint should be protected.
+let headers = ["Content-Type": "application/json",
+               "Authorization": "Bearer " + authToken]
+
+// This function makes authenticated request to GET /virgil-jwt endpoint
+// The token it returns serves to make authenticated requests to Virgil Cloud
+let tokenCallback: EThree.RenewJwtCallback = { completion in
+    let request = Request(url: url, method: .get, headers: headers)
+
+    guard let response = try? connection.send(request),
+        let body = response.body,
+        let json = try? JSONSerialization.jsonObject(with: body, options: []) as? [String: Any],
+        let jwtString = json?["virgilToken"] as? String else {
+            completion(nil, AppError.gettingJwtFailed)
+            return
+    }
+
+    completion(jwtString, nil)
+}
+
+// Initialize EThree SDK with get token callback to your sever
+// E3kit uses the identity encoded in the JWT as the current user's identity
+EThree.initialize(tokenCallback: tokenCallback) { eThree, error in
+    // Init done!
+}
 ```
 
 ```kotlin
@@ -136,6 +211,32 @@ initalize('alice').then(({ e3kit, twilioChat }) => /* e3kit and twilioChat are i
 
 
 The `EThree.initialize()` function gets the user's Virgil JWT, parses it, initializes the library and returns its instance, which is further used with user's `identity`. The `EThree.initialize()` function must be used on SignUp and SignIn flows.
+
+### Initialize Twilio
+```swift
+import TwilioChatClient
+import VirgilSDK
+
+let url = URL(string: "http://localhost:3000/twilio-jwt")!
+let headers = ["Content-Type": "application/json",
+               "Authorization": "Bearer " + authToken]
+let request = Request(url: url, method: .get, headers: headers)
+
+let response = try! connection.send(request)
+
+let body = response.body!
+
+let json = try! JSONSerialization.jsonObject(with: body,
+                                             options: []) as! [String: Any]
+let token = json["twilioToken"] as! String
+
+TwilioChatClient.chatClient(withToken: token, properties: nil, delegate: nil) { result, client in
+    guard let client = client, result.isSuccessful() else {
+        // Error handling here
+    }
+}
+```
+
 
 ## Step 3: Register Users on Virgil Cloud
 User Registration on Virgil Cloud consists of generating a public-private keypair for a user, saving the private key on their device and publishing the public key on the Virgil Cloud (for other users to reference). 
@@ -153,7 +254,18 @@ eThree.register()
 ```
 
 ```swift
-// swift
+import VirgilE3Kit
+
+// TODO: Initialize E3Kit
+
+// Generates new keypair for the user. Saves private key to the device and 
+// publishes public key to the Virgil's cloud
+eThree.register { error in 
+    guard error == nil else {
+        // Error handling here 
+    }
+    // User private key loaded, ready to end-to-end encrypt!
+}
 ```
 
 ```kotlin
@@ -162,7 +274,7 @@ eThree.register()
 There is no need to use `EThree.register()` method on Sign In flow.
 
 ## Step 4: Create a Twilio Channel 
-Virgil doesn't provide you with any functionality to create or manage users' channels or messages. So, now you have to use Twlio SDK to create a [channel for users conversation](https://www.twilio.com/docs/chat/channels). 
+Virgil doesn't provide you with any functionality to create or manage users' channels or messages. So, now you have to use Twilio SDK to create a [channel for users conversation](https://www.twilio.com/docs/chat/channels). 
 
 ## Step 5: Sign and Encrypt Messages 
 Once you're a member of a channel, you can encrypt and send a message to it. You can find how to send messages to a channel using Twilio [here](https://www.twilio.com/docs/chat/channels#send-messages-to-a-channel).
@@ -183,7 +295,25 @@ channel.sendMessage(encryptedMessage);
 ```
 
 ```swift
-// swift
+import VirgilE3Kit
+import TwilioChatClient
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+// channel - instance of Twilio Channel class
+
+channel.members?.members { result, membersPaginator in
+    let identities = membersPaginator!.items().map { $0.identity! }
+    
+    // Lookup user public keys
+    eThree.lookupPublicKeys(of: identities) { lookupResult, errors in
+        guard errors.isEmpty else {
+            // Error handling here
+        }
+    
+        // Encrypt text using target user public keys
+        let encryptedText = try! eThree.encrypt(text: "Hello, this message will be encrypted", for: lookupResult!)
+    }
+}
 ```
 
 ```kotlin
@@ -208,7 +338,16 @@ const decryptedMessage = await e3kit.decrypt(message.body, authorPublicKey);
 ```
 
 ```swift
-// swift
+import VirgilE3Kit
+
+// TODO: init SDK and register users - see EThree.initialize and EThree.register
+// message - instance of Twillio Message class
+
+// Lookup user public key
+eThree.lookupPublicKeys(of: [message.author!]) { lookupResult, errors in
+    // Decrypt text and verify if it was really written by author
+    let originText = try! eThree.decrypt(text: message.body!, from: lookupResult[message.author!]!)
+}
 ```
 
 ```kotlin
@@ -242,6 +381,18 @@ eThree.backupPrivateKey(keyPassword)
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+
+eThree.backupPrivateKey(password: keyPassword) { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 - **second**, on each new device use the `EThree.restorePrivateKey(pwd)` method to download the user's private key from the cloud and decrypt it:
 ```javascript
 // TODO: initialize, register user and backup private key
@@ -254,6 +405,22 @@ if (!hasPrivateKey) await eThree.restorePrivateKey(keyPassword);
 eThree.hasPrivateKey().then(hasPrivateKey => {
     if (!hasPrivateKey) eThree.restorePrivateKey(keyPassword);
 });
+```
+
+```swift
+import VirgilE3Kit
+
+// TODO: init, register user, backup key (see EThree.initialize, EThree.register and EThree.backupPrivateKey)
+// Prerequisites: current local key should be cleaned up (see EThree.cleanUp)
+
+// Note: To know whether private key is present on device you can use hasLocalPrivateKey() function:
+if try! !hasLocalPrivateKey() {
+    eThree.restorePrivateKey(password: keyPassword) { error in
+        guard error == nil else {
+            // Error handling here
+        }
+    }
+}
 ```
 
 If you are not sure whether the user is using the original device or a new device, you can use `eThree.hasPrivateKey()` method to check if the user's private key already exists on the device. If the user's private key is indeed present on the device, then you can encrypt/decrypt data. Otherwise use the `EThree.restorePrivateKey(pwd)` method to access the user's private key using their backup password.
@@ -276,6 +443,18 @@ eThree.rotatePrivateKey()
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init, register user, lose key (see EThree.initialize and EThree.register)
+
+eThree.rotatePrivateKey { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 > If a user loses their private key before making a backup, they won't be able to decrypt previously encrypted data.
 
 ## Change Backup Password
@@ -293,6 +472,18 @@ eThree.changePassword(oldPassword, newPassword)
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+
+eThree.changePassword(from: oldPwd, to: newPwd) { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 ## Reset User Key
 
 To delete a user's encrypted private key from Virgil Cloud, use the `EThree.resetPrivateKeyBackup(pwd)` method:
@@ -307,6 +498,18 @@ eThree.resetPrivateKeyBackup(keyPassword)
     .catch(e => console.error('error: ', e));
 ```
 
+```swift
+import VirgilE3Kit
+
+// TODO: init and register user (see EThree.initialize and EThree.register)
+
+eThree.resetPrivateKeyBackup(password: keyPassword) { error in
+    guard error == nil else {
+        // Error handling here
+    }
+}
+```
+
 ## Clean Up Device
 
 To delete a user's private key from their device use the `EThree.cleanUp()` method:
@@ -318,6 +521,13 @@ await eThree.cleanup();
 eThree.cleanup()
     .then(() => console.log('success'))
     .catch(e => console.error('error: ', e));
+```
+
+```swift
+import VirgilE3Kit
+// TODO: initialize and register user (see EThree.initialize and EThree.register)
+
+try! eThree.cleanUp()
 ```
 
 > When you want to clean up a user key be sure that you made its backup.
