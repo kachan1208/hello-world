@@ -11,3 +11,9 @@
 * **PUREKIT SDK** - Server-side SDK allows developers to communicate with the Virgil PHE service and perform necessary operation to protect users' passwords and personal identifiable information in a database from data breaches and both online and offline attack
   * [Javascript](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
   * [Java](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
+
+### Services 
+* **Cards Service** - Stores and manages users' Virgil Cards with Public Keys and associated information
+* **PFS Service** - Service dedicated to managing one-time and long-time keys used to solve a Perfect Forward Secrecy scenario
+
+### CLI 
