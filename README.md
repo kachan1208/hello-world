@@ -9,10 +9,6 @@
 | [Javascript](https://github.com/VirgilSecurity/e3kit-js)  |  [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit) |
 |---|---|
 | [Java](https://github.com/VirgilSecurity/e3kit-js)  | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.virgilsecurity/purekit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.virgilsecurity/purekit)  |  
-
-  * [Javascript](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
-  * [Java](https://github.com/VirgilSecurity/e3kit-js) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.virgilsecurity/purekit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.virgilsecurity/purekit)
-
 * **PUREKIT SDK** - Server-side SDK allows developers to communicate with the Virgil PHE service and perform necessary operation to protect users' passwords and personal identifiable information in a database from data breaches and both online and offline attack
   * [Javascript](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
   * [Java](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
