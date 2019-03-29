@@ -13,7 +13,7 @@
   * [Java](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
 
 ### Services 
-* **Cards Service** - Stores and manages users' Virgil Cards with Public Keys and associated information
-* **PFS Service** - Service dedicated to managing one-time and long-time keys used to solve a Perfect Forward Secrecy scenario
+* [Cards Service](https://developer.virgilsecurity.com/docs/api-reference/card-service/v5) - Stores and manages users' Virgil Cards with Public Keys and associated information
+* [PFS Service](https://developer.virgilsecurity.com/docs/api-reference/card-service/v5) - Service dedicated to managing one-time and long-time keys used to solve a Perfect Forward Secrecy scenario
 
 ### CLI 
