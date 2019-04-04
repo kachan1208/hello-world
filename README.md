@@ -12,32 +12,35 @@ In this fill, we'll walk through a hypothetical service scenario involving a Ion
 The diagram below reflects the general architecture overview:
 https://cdn.discordapp.com/attachments/426001031134969858/563369323477860362/Untitled_Diagram7.png
 
-### Participants
+#### Participants
 - Virgil Cloud
 - Ionic Clod
 - End-users (Developers)
 - Hashicorp Vault - encrypted keys storage
+- Virgil-Ionic High Level SDK
 
-### How it works
+#### How it works
 
-#### Developer 
-- Create the Ionic-Virgil type Application in Virgil infrastructure (on Virgil Dashbord)
+##### How it looks like from a Developer Side
+- Developer navigates to Virgil Dashboard
+- Creates the Ionic-Virgil type Application in Virgil infrastructure (on Virgil Dashbord)
+- Gets Application Credentials 
+- Navigates to Virgil-Ionic SDK and sets up it with Application credentials
+- Makes a request to Virgil SAML Generator Service using SDK. Each Request requires a Virgil JWT
+- Gets the SAML assertion
+- Sends a request with SAML to specified Ionic Enrollment server
 
-#### Virgil Cloud
-- Under the hood: Virgil SAML Service makes a request to Ionic Cloud to create a new enrollment server
-
-#### Ionic Cloud
-- Under the hood: Generates a new enrollment server and sends a RSA Key to Virgil to the SAML Service
-
-#### Virgil Cloud
-- Under the hood: Receives the RSA Key, encrypted it with the Server Master Key and stores it into a Cassandra Database of the SAML Service
+##### How it looks like from Virgil Side
+- Virgil Infrastructure gets request from a developer to create a the Ionic-Virgil type Application and send Application Credentails for SDK configuration
+- Virgil SAML Service makes a request to Ionic Cloud to create a new Enrollment Server
+- Ionic Cloud Generates a new enrollment server and sends a RSA Key to Virgil to the SAML Service
+- Virgil SAML Service receives the RSA Key, encrypts it with the Server Master Key and stores it into own Cassandra Database
 
 
 
 Master key transfers to service during service initialization step from Hashicorp Vault which is an encrypted storage.
 
-### SAML generation (device enrollment)
-SAML assertion generator service have only one endpoint and it receive a bunch of data about user and generates SAML assertion for specified Enrollment service.
+
 
 JWT Validation is working on API Gateway.
 
@@ -63,37 +66,46 @@ JWT Validation is working on API Gateway.
 ...
 
 ## Potential SAML Service API
+SAML assertion generator service have only one endpoint and it receive a bunch of data about user and generates SAML assertion for specified Enrollment service.
 
-**Transport protocol:** HTTP 2.0(HTTPs)
-___
-### POST /saml
-Get SAML assertion to enroll device
+### Prerequisites 
+- to have a Virgil JWT 
 
-Request:
+### POST /saml Endpoint 
+The Endpoint generates a SAML assertion to enroll device
+ 
+HTTP Request method: POST /saml
+Transport protocol: HTTP 2.0(HTTPs)
 
-    POST /v1/saml HTTP/2.0
-    HOST: api.virgilsecurity.com
-    Content-type: application/json
-    Content-Length: <len>
-    Authorization: Virgil <JWT>
-    Accept: application/xml
 
-    {
-        "application_id": <app_id>,
-        "user_email": <user_email>,
-        "user_name": <user_name>,
-        "user_id": <id>,
-        "issuer": <issuer>,
-        "destination": <destination>,
-    }
+```Request Info
 
-Response:
+POST /v1/saml HTTP/2.0
+HOST: api.virgilsecurity.com
+Content-type: application/json
+Content-Length: <len>
+Authorization: Virgil <JWT>
+Accept: application/xml
+```
+```Request Body
+{
+    "application_id": <app_id>,
+    "user_email": <user_email>,
+    "user_name": <user_name>,
+    "user_id": <id>,
+    "issuer": <issuer>,
+    "destination": <destination>,
+}
+```
+
+```Response Info:
 
     HTTP/2.0 OK
     Location: api.virgilsecurity.com/v1/saml
     Content-type: application/xml
     Content-Length: <len>
-
+```
+```Responce Body
     <?xml version="1.0" encoding="UTF-8"?>
     <saml2p:Response xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Destination="-- USER NAME --" ID="-- ID --" InResponseTo="-- UUID V4 --" IssueInstant="2019-03-21T12:17:51.083Z" Version="2.0">
     <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">svrenrolltool</saml2:Issuer>
@@ -142,14 +154,14 @@ Response:
         </saml2:AuthnStatement>
     </saml2:Assertion>
     </saml2p:Response>
+```
 
-
-### Bunch of tasks:
+### Roadmap 
 #### Backend team:
- - Add new application type to Developer service(internal service)
+ - Add a new application type to Developer service(internal service)
  - Integrate Developer with Ionic cloud
- - Integrate Hashicorp Vault
- - Write GO SDK for SAML generator service
- - Write SAML assertion generator service
- - Add routing on API Gateway
- - Add configuration to Dashboard Backend
+ - Integrate a Hashicorp Vault
+ - Write a GO SDK for SAML generator service
+ - Write a SAML assertion generator service
+ - Add a routing on API Gateway
+ - Add a configuration to Dashboard Backend
