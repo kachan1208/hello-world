@@ -21,7 +21,7 @@ https://cdn.discordapp.com/attachments/426001031134969858/563369323477860362/Unt
 
 #### How it works
 
-##### How it looks like from a Developer Side
+#### How it looks like from a Developer Side
 - Developer navigates to Virgil Dashboard
 - Creates the Ionic-Virgil type Application in Virgil infrastructure (on Virgil Dashbord)
 - Gets Application Credentials 
@@ -37,33 +37,6 @@ https://cdn.discordapp.com/attachments/426001031134969858/563369323477860362/Unt
 - Virgil SAML Service receives the RSA Key, encrypts it with the Server Master Key and stores it into own Cassandra Database
 
 
-
-Master key transfers to service during service initialization step from Hashicorp Vault which is an encrypted storage.
-
-
-
-JWT Validation is working on API Gateway.
-
-### Usage(step by step):
-**DEVELOPER** creates application with type "Ionic"(or similar)
-
-**VIRGIL BACKEND** creates application, going to Ionic cloud, get Enrollment server RSA key, encrypt it and stores into DB
-
-**DEVELOPER** insert configuration to SDK and writes an application.
-
-**USER** Authorizes in Application provider
-
-**APPLICATION PROVIDER** generates JWT and transfer it to client
-
-**USER** Makes a request to Virgil backend SAML generator service using SDK(app) and pass to it needed data with JWT
-
-**VIRGIL BACKEND** API Gateway validates JWT
-
-**VIRGIL BACKEND** SAML generation service generates SAML assertion and return it to user
-
-**USER** send request with SAML to specified Ionic Enrollment server
-
-...
 
 ## Potential SAML Service API
 SAML assertion generator service have only one endpoint and it receive a bunch of data about user and generates SAML assertion for specified Enrollment service.
