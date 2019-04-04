@@ -50,8 +50,9 @@ The Endpoint generates a SAML assertion to enroll device
 HTTP Request method: POST /saml
 Transport protocol: HTTP 2.0(HTTPs)
 
+**Request Info**:
 
-```Request Info
+```shell
 
 POST /v1/saml HTTP/2.0
 HOST: api.virgilsecurity.com
@@ -60,7 +61,9 @@ Content-Length: <len>
 Authorization: Virgil <JWT>
 Accept: application/xml
 ```
-```Request Body
+
+**Request Body**:
+```shell
 {
     "application_id": <app_id>,
     "user_email": <user_email>,
@@ -71,14 +74,17 @@ Accept: application/xml
 }
 ```
 
-```Response Info:
+**Response info**:
+```shell
 
     HTTP/2.0 OK
     Location: api.virgilsecurity.com/v1/saml
     Content-type: application/xml
     Content-Length: <len>
 ```
-```Responce Body
+
+**Responce Body**:
+```shell
     <?xml version="1.0" encoding="UTF-8"?>
     <saml2p:Response xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Destination="-- USER NAME --" ID="-- ID --" InResponseTo="-- UUID V4 --" IssueInstant="2019-03-21T12:17:51.083Z" Version="2.0">
     <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">svrenrolltool</saml2:Issuer>
