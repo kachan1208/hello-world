@@ -1,20 +1,155 @@
+# SAML Assertion Generator Service
+
+## Introduction 
+This file contains information about the SAML Assertion Generator Service, its purpose and the mechanism of interaction with it.
+
+## Purpose 
+Develop a SAML Assertion Generator Service that will generate a SAML assertion on Ionic Cloud from the 3rd-party infrastucture.
+
+## Implementation and Technical Details
+In this fill, we'll walk through a hypothetical service scenario involving a Ionic Cloud, Virgil Cloud and End-users (Developers).
+
+The diagram below reflects the general architecture overview:
+https://cdn.discordapp.com/attachments/426001031134969858/563369323477860362/Untitled_Diagram7.png
+
+### Participants
+- Virgil Cloud
+- Ionic Clod
+- End-users (Developers)
+- Hashicorp Vault - encrypted keys storage
+
+### How it works
+
+#### Developer 
+- Create the Ionic-Virgil type Application in Virgil infrastructure (on Virgil Dashbord)
+
+#### Virgil Cloud
+- Under the hood: Virgil SAML Service makes a request to Ionic Cloud to create a new enrollment server
+
+#### Ionic Cloud
+- Under the hood: Generates a new enrollment server and sends a RSA Key to Virgil to the SAML Service
+
+#### Virgil Cloud
+- Under the hood: Receives the RSA Key, encrypted it with the Server Master Key and stores it into a Cassandra Database of the SAML Service
 
 
 
+Master key transfers to service during service initialization step from Hashicorp Vault which is an encrypted storage.
+
+### SAML generation (device enrollment)
+SAML assertion generator service have only one endpoint and it receive a bunch of data about user and generates SAML assertion for specified Enrollment service.
+
+JWT Validation is working on API Gateway.
+
+### Usage(step by step):
+**DEVELOPER** creates application with type "Ionic"(or similar)
+
+**VIRGIL BACKEND** creates application, going to Ionic cloud, get Enrollment server RSA key, encrypt it and stores into DB
+
+**DEVELOPER** insert configuration to SDK and writes an application.
+
+**USER** Authorizes in Application provider
+
+**APPLICATION PROVIDER** generates JWT and transfer it to client
+
+**USER** Makes a request to Virgil backend SAML generator service using SDK(app) and pass to it needed data with JWT
+
+**VIRGIL BACKEND** API Gateway validates JWT
+
+**VIRGIL BACKEND** SAML generation service generates SAML assertion and return it to user
+
+**USER** send request with SAML to specified Ionic Enrollment server
+
+...
+
+## Potential SAML Service API
+
+**Transport protocol:** HTTP 2.0(HTTPs)
+___
+### POST /saml
+Get SAML assertion to enroll device
+
+Request:
+
+    POST /v1/saml HTTP/2.0
+    HOST: api.virgilsecurity.com
+    Content-type: application/json
+    Content-Length: <len>
+    Authorization: Virgil <JWT>
+    Accept: application/xml
+
+    {
+        "application_id": <app_id>,
+        "user_email": <user_email>,
+        "user_name": <user_name>,
+        "user_id": <id>,
+        "issuer": <issuer>,
+        "destination": <destination>,
+    }
+
+Response:
+
+    HTTP/2.0 OK
+    Location: api.virgilsecurity.com/v1/saml
+    Content-type: application/xml
+    Content-Length: <len>
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <saml2p:Response xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Destination="-- USER NAME --" ID="-- ID --" InResponseTo="-- UUID V4 --" IssueInstant="2019-03-21T12:17:51.083Z" Version="2.0">
+    <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">svrenrolltool</saml2:Issuer>
+    <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+        <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments" />
+        <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+        <ds:Reference URI="-- URI --">
+            <ds:Transforms>
+            <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+            <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+                <ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xsd" />
+            </ds:Transform>
+            </ds:Transforms>
+            <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <ds:DigestValue>-- DIGEST VALUE(SHA256) -- </ds:DigestValue>
+        </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue></ds:SignatureValue>
+    </ds:Signature>
+    <saml2p:Status>
+        <saml2p:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
+    </saml2p:Status>
+    <saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" ID="-- ASSERTION ID --" IssueInstant="-- DATETIME --" Version="2.0">
+        <saml2:Issuer>-- ISSUER --</saml2:Issuer>
+        <saml2:Subject>
+        <saml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress">email</saml2:NameID>
+        <saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+            <saml2:SubjectConfirmationData InResponseTo="-- IN RESPONSE TO --" NotBefore="-- DATE BEFORE --" NotOnOrAfter="-- DATE FOR --" Recipient="-- IONIC RECIPIENT URL --" />
+        </saml2:SubjectConfirmation>
+        </saml2:Subject>
+        <saml2:Conditions NotBefore="-- DATE BEFORE --" NotOnOrAfter="-- DATE FOR --">
+        <saml2:AudienceRestriction>
+            <saml2:Audience>-- USER NAME --</saml2:Audience>
+        </saml2:AudienceRestriction>
+        </saml2:Conditions>
+        <saml2:AttributeStatement>
+        <saml2:Attribute Name="email">
+            <saml2:AttributeValue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">-- USER EMAIL --</saml2:AttributeValue>
+        </saml2:Attribute>
+        </saml2:AttributeStatement>
+        <saml2:AuthnStatement AuthnInstant="2019-03-21T12:17:51.117Z">
+        <saml2:AuthnContext>
+            <saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</saml2:AuthnContextClassRef>
+        </saml2:AuthnContext>
+        </saml2:AuthnStatement>
+    </saml2:Assertion>
+    </saml2p:Response>
 
 
-### SDK
-* **E3KIT SDK** - Client-side SDK that simplifies work with Virgil services and presents the easiest way to add full end-to-end encryption (E2EE) security to your digital solutions. E3Kit interacts with Cards Service, Keyknox Service and Pythia Service and supports multi-device access and group chat features.
-
-| [Javascript](https://github.com/VirgilSecurity/e3kit-js)  |  [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit) |
-|---|---|
-| [Java](https://github.com/VirgilSecurity/e3kit-js)  | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.virgilsecurity/purekit/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.virgilsecurity/purekit)  |  
-* **PUREKIT SDK** - Server-side SDK allows developers to communicate with the Virgil PHE service and perform necessary operation to protect users' passwords and personal identifiable information in a database from data breaches and both online and offline attack
-  * [Javascript](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
-  * [Java](https://github.com/VirgilSecurity/e3kit-js) [![npm](https://img.shields.io/npm/v/@virgilsecurity/e3kit.svg)](https://www.npmjs.com/package/@virgilsecurity/e3kit)
-
-### Services 
-* [Cards Service](https://developer.virgilsecurity.com/docs/api-reference/card-service/v5) - Stores and manages users' Virgil Cards with Public Keys and associated information
-* [PFS Service](https://developer.virgilsecurity.com/docs/api-reference/card-service/v5) - Service dedicated to managing one-time and long-time keys used to solve a Perfect Forward Secrecy scenario
-
-### CLI 
+### Bunch of tasks:
+#### Backend team:
+ - Add new application type to Developer service(internal service)
+ - Integrate Developer with Ionic cloud
+ - Integrate Hashicorp Vault
+ - Write GO SDK for SAML generator service
+ - Write SAML assertion generator service
+ - Add routing on API Gateway
+ - Add configuration to Dashboard Backend
