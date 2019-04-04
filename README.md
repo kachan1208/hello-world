@@ -10,7 +10,7 @@ Develop a SAML Assertion Generator Service that will generate a SAML assertion o
 In this fill, we'll walk through a hypothetical service scenario involving a Ionic Cloud, Virgil Cloud and End-users (Developers).
 
 The diagram below reflects the general architecture overview:
-<a href="https://virgilsecurity.com"><img src="my_new_img/saml.jpg" width=100%></a>
+<a href="https://virgilsecurity.com"><img src="my_new_img/saml.png" width=100%></a>
 
 #### Participants
 - Virgil Cloud
